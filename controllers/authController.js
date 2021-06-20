@@ -9,7 +9,7 @@ const createToken = id => jwt.sign({ id: id }, process.env.JWT_TOKEN, {
   expiresIn: process.env.JWT_EXPIRES_IN
 });
 
-const setCookie = (res, token) => {
+const setCookie = (req, res, token) => {
   return res.cookie('jwt', token, {
     secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
     // secure: false,
@@ -34,7 +34,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     console.log(`💥💥💥 ${err}`);
   }
 
-  setCookie(res, token);
+  setCookie(req, res, token);
   res.status(200).json({
     status: 'success',
     token: token
@@ -49,7 +49,7 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!user || !await user.isPasswordCorrect(password, user.password)) return next(new AppError('Incorrect email or password!', 401));
 
   const token = createToken(user._id);
-  setCookie(res, token);
+  setCookie(req, res, token);
   res.status(201).json({
     status: 'success',
     token: token
