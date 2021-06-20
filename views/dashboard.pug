@@ -1,0 +1,20 @@
+extends base 
+
+block content 
+  main.main.main--dashboard
+    section.section.section--create 
+      form#create-url-dashboard(data-user=`${user._id}`)
+        input(type='text' name='url' placeholder='Enter Url To Shorten') 
+        button(type='submit').btn.btn--squared Shorten 
+    section.section.section--urls
+      table.table
+        thead
+          tr.table__row.table__head-row 
+            th S No.
+            th Shortened Urls 
+            th Original Urls 
+            th Clicks
+            th Options 
+        tbody.table__body(data-urls=urls, data-host=host)
+          //- Dynamic content from javascript goes here
+

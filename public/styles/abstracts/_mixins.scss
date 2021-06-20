@@ -1,0 +1,18 @@
+@mixin underlineAnimation {
+  &::after {
+    content: '';
+    display: block;
+    height: 0.3rem;
+    width: 10%;
+    background-color: $color-primary-1;
+    transition: all 0.3s ease;
+  }
+  
+  &:hover::after {
+    width: 100%;
+  }
+}
+
+@mixin borderBottom($color) {
+  border-bottom: 3px solid $color;
+}

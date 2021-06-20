@@ -1,0 +1,16 @@
+extends base 
+
+block content 
+  section.form-section 
+    .form-container 
+      form.form.form--login
+        h2.heading--primary.u-mb-medium Login to your account
+
+        .form__group 
+          label(for='email').form__label.u-mb-micro Email 
+          input#email.form__input(name='email' type='email' placeholder='you@example.com' required)
+        .form__group 
+          label(for='password').form__label.u-mb-micro Password 
+          input#password.form__input(name='password' type='password' placeholder='••••••••' required minlength=8)
+        
+        button.btn.btn--fill Login

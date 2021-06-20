@@ -1,0 +1,27 @@
+extends base 
+
+block content 
+  main.main.main--account 
+    .forms__container 
+      form.form.form--data
+        h2.heading--secondary.u-mb-medium Update Data 
+        .form__group 
+          label(for='name').form__label Name 
+          input#name.form__input(placeholder='Your Name' name='name' value=`${user.name}` required)
+        .form__group 
+          label(for='email').form__label Email 
+          input#email.form__input(placeholder='you@example.com' name='email' value=`${user.email}` required)
+        button.btn.btn--fill.btn--data(type='submit') Update data
+      
+      form.form.form--password
+        h2.heading--secondary.u-mb-medium Update Password 
+        .form__group 
+          label(for='passwordCurrent').form__label Current Password
+          input#passwordCurrent.form__input(name='passwordCurrent' placeholder='••••••••' minlength=8 required)
+        .form__group 
+          label(for='password').form__label Password 
+          input#password.form__input(name='password' placeholder='••••••••' minlength=8 value='' required)
+        .form__group 
+          label(for='passwordConfirm').form__label Re-enter password 
+          input#passwordConfirm.form__input(name='passwordConfirm' placeholder='••••••••' minlength=8 required)
+        button.btn.btn--fill.btn--password(type='submit') Update password

@@ -1,0 +1,17 @@
+extends baseEmail 
+
+block content
+  p Hi #{firstName},
+  p Welcome to Su.ly, we're glad to have you 🎉🙏
+  p Thank you for trying out Su.ly. We can gurantee you that you won't regret the experience!
+  table.btn.btn-primary(role='presentation', border='0', cellpadding='0', cellspacing='0')
+    tbody
+      tr
+        td(align='left')
+          table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+            tbody
+              tr
+                td
+                  a.btn--main(href=`${url}`, target='_blank') Take me to the website!
+  p If you face any issues with Su.ly, please don't resitate to contact us! Our support team is always there to help!
+  p - The Su.ly Team 

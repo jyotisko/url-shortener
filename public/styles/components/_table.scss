@@ -1,0 +1,32 @@
+.table {
+  width: 100%;
+  height: auto;
+
+  &__head-row {
+    font-size: 2rem;
+    text-align: left;
+    background-color: rgba($color-gray-1, 0.2);
+  }
+
+  &__row {
+    td, 
+    th {
+      padding: 1rem 2rem;
+    }
+  }
+
+  &__data-row  {
+    position: relative;
+    font-size: 1.8rem;
+
+    &:nth-child(odd) {
+      background-color: rgba($color-gray-1, 0.09);
+    }
+  }
+
+  &__link {
+    font-weight: 500;
+    opacity: 0.8;
+    color: $color-primary-2;
+  }
+}

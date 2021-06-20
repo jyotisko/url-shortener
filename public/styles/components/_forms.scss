@@ -1,0 +1,78 @@
+.form {
+  &__group {
+    width: 100%;
+    &:not(:last-child) {
+      margin-bottom: 3rem;
+    }
+  }
+
+  &__label,
+  &__input {
+    font-size: 2rem;
+    display: block;
+    color: $color-primary-1;
+    font-weight: 400;
+  }
+
+  &__input {
+    width: 100%;
+    color: $color-black-1;
+    font-size: 2rem;
+    padding: 1rem 1.2rem;
+    outline: none;
+    border: none;
+    background-color: rgba($color-gray-1, 0.06);
+    border-bottom: none;
+
+    &::placeholder {
+      color: rgba($color-gray-1, 0.8);
+    }
+
+    &:invalid {
+      border-bottom: 3px solid $color-primary-1;
+    }
+
+    &:valid {
+      border-bottom: 3px solid rgba($color-green-1, 0.8);
+    }
+  }
+
+  &--data,
+  &--password {
+    h2 {
+      display: inline-block;
+      @include underlineAnimation;
+    }
+  }
+}
+
+.create-url,
+#create-url-dashboard {
+  width: 100%;
+
+  input,
+  button,
+  a {
+    padding: 1rem 2rem;
+    font-size: 2rem;
+    outline: none;
+    border: none;
+  }
+
+  input {
+    width: 80%;
+    background-color: rgba($color-gray-1, 0.09);
+  }
+
+  .create-url__btn {
+    width: 20%;
+  }
+
+  button {
+    width: 20%;
+  }
+
+  .hidden {
+    display: none;
+  }
+}

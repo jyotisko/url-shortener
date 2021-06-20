@@ -1,0 +1,16 @@
+.main--account {
+  padding: 4rem 10rem;
+  display: grid;
+  place-items: center;
+  
+  .forms__container  {
+    height: auto;
+    width: 85%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 5rem;
+    background-color: rgba($color-gray-1, 0.04);
+    padding: 2.5rem;
+    border-radius: 5px;
+  }
+}

@@ -1,0 +1,14 @@
+.icon {
+  color: $color-primary-1;
+  cursor: pointer;
+
+  &--disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+    color: rgba($color-primary-1, 0.5);
+  }
+
+  &:not(:last-child) {
+    margin-right: 1rem;
+  }
+}
