@@ -9,9 +9,8 @@ router.get('/login', viewController.getLoginPage);
 router.get('/signup', viewController.getSignupPage);
 router.get('/c/:code', viewController.redirectToOriginalUrl);
 
-router.use(authController.protect);
-router.get('/dashboard', viewController.getDashboard);
-router.get('/donate', viewController.getDonation);
-router.get('/account', viewController.getAccount);
+router.get('/dashboard', authController.protect, viewController.getDashboard);
+router.get('/donate', authController.protect, viewController.getDonation);
+router.get('/account', authController.protect, viewController.getAccount);
 
 module.exports = router;

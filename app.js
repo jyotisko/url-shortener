@@ -8,6 +8,8 @@ const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
 const cookieParser = require('cookie-parser');
 const mongoSanitize = require('express-mongo-sanitize');
+const compression = require('compression')
+
 const urlRouter = require('./routes/urlRoutes');
 const userRouter = require('./routes/userRoutes');
 const viewRouter = require('./routes/viewRoutes');
@@ -31,6 +33,7 @@ app.use(rateLimit({
   message: 'Too many requests from the same IP, please try again in an hour!'
 }));
 app.use(mongoSanitize());
+app.use(compression());
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json({ limit: '10kb' }));

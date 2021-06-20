@@ -12,6 +12,7 @@ const createToken = id => jwt.sign({ id: id }, process.env.JWT_TOKEN, {
 const setCookie = (res, token) => {
   return res.cookie('jwt', token, {
     secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
+    // secure: false,
     httpOnly: true,
     expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000)
   });

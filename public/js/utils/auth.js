@@ -20,6 +20,7 @@ export const authenticate = async (type, data) => {
       }, 3000);
     }
   } catch (err) {
-    showAlert('error', 'Something went wrong. Either the email is already taken, or it is an internal server error.');
+    showAlert('error', `Something went wrong. ${err.response.data.message}`);
+    console.log(err);
   }
 };
