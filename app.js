@@ -28,7 +28,7 @@ app.use(xss());
 app.use(hpp());
 app.use(cors());
 app.use(rateLimit({
-  max: 800,
+  max: 200,
   windowMs: 1000 * 60 * 60,  // 1 hr
   message: 'Too many requests from the same IP, please try again in an hour!'
 }));
