@@ -42,17 +42,22 @@ class Dashboard {
 
   addHandlerCreate() {
     this.createUrlForm.addEventListener('click', async e => {
-      e.preventDefault();
-      const originalUrl = this.createUrlForm['url'].value;
-      if (!originalUrl) return;
-      if (!validator.isURL(originalUrl)) return showAlert('error', 'Please enter a valid URL!');
-      if (originalUrl.includes(window.location.hostname)) return showAlert('error', 'Already a valid Su.ly URL!');
+      try {
+        e.preventDefault();
+        const originalUrl = this.createUrlForm['url'].value;
+        if (!originalUrl) return;
+        if (!validator.isURL(originalUrl)) return showAlert('error', 'Please enter a valid URL!');
+        if (originalUrl.includes(window.location.hostname)) return showAlert('error', 'Already a valid Su.ly URL!');
 
-      const { data } = await createUrlForLoggedInUser(originalUrl, this.createUrlForm.dataset.user);
-      this.urls.unshift(data.url);
-      this.generateAndRenderMarkup();
-
-      this.createUrlForm['url'].value = '';
+        const { data } = await createUrlForLoggedInUser(originalUrl, this.createUrlForm.dataset.user);
+        this.urls.unshift(data.url);
+        this.generateAndRenderMarkup();
+        this.createUrlForm['url'].value = '';
+      } catch (err) {
+        let msg = '';
+        if (err.message.includes('429')) msg = 'Too many requests from the same IP. Please try again in an hour.';
+        showAlert('error', `Something went wrong. ${msg || err.response.data.message}`);
+      }
     });
   }
 
@@ -80,7 +85,7 @@ class Dashboard {
         const id = e.target.closest('.table__data-row').dataset.id;
 
         await swal({
-          text: 'Enter the short custom code. It should be unique. The shorter, the better!',
+          text: 'Enter the short custom code. It should be unique. Special characters are not allowed The shorter, the better!',
           content: 'input',
           button: {
             text: 'Update!',
@@ -88,6 +93,11 @@ class Dashboard {
           }
         }).then(async code => {
           if (!code) throw null;
+          if (code.match(/\W|_/g) && code.match(/\W|_/g).length > 0) {
+            swal.close();
+            showAlert('error', 'Code must not contain special character!');
+            throw null;
+          }
           const { data } = await updateUrl(id, code);
           this.urls = this.urls.map(url => {
             if (url._id === id) return data.url;

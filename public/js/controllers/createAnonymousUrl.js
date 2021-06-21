@@ -24,7 +24,9 @@ export default createAnonymousUrlForm => {
       urlToShortenEl.value = `${window.location.hostname}:${window.location.port}/c/${res.data.url.shortCode}`;
       createUrlBtn.value = 'Shorten!';
     } catch (err) {
-      showAlert('error', `Something went wrong. ${err.response.data.message}`);
+      let msg = '';
+      if (err.message.includes('429')) msg = 'Too many requests from the same IP. Please try again after an hour';
+      showAlert('error', `Something went wrong. ${msg || err.response.data.message}`);
     }
   });
 

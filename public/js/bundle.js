@@ -10099,7 +10099,7 @@ var _default = function _default(createAnonymousUrlForm) {
   var createUrlBtn = document.querySelector('.create-url__btn--shorten');
   createAnonymousUrlForm.addEventListener('submit', /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
-      var res;
+      var res, msg;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
@@ -10161,15 +10161,17 @@ var _default = function _default(createAnonymousUrlForm) {
               createUrlBtn.classList.toggle('hidden');
               urlToShortenEl.value = "".concat(window.location.hostname, ":").concat(window.location.port, "/c/").concat(res.data.url.shortCode);
               createUrlBtn.value = 'Shorten!';
-              _context.next = 26;
+              _context.next = 28;
               break;
 
             case 23:
               _context.prev = 23;
               _context.t0 = _context["catch"](0);
-              (0, _showAlert.showAlert)('error', "Something went wrong. ".concat(_context.t0.response.data.message));
+              msg = '';
+              if (_context.t0.message.includes('429')) msg = 'Too many requests from the same IP. Please try again after an hour';
+              (0, _showAlert.showAlert)('error', "Something went wrong. ".concat(msg || _context.t0.response.data.message));
 
-            case 26:
+            case 28:
             case "end":
               return _context.stop();
           }
@@ -10439,43 +10441,44 @@ var Dashboard = /*#__PURE__*/function () {
 
       this.createUrlForm.addEventListener('click', /*#__PURE__*/function () {
         var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
-          var originalUrl, _yield$createUrlForLo, data;
+          var originalUrl, _yield$createUrlForLo, data, msg;
 
           return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
+                  _context.prev = 0;
                   e.preventDefault();
                   originalUrl = _this.createUrlForm['url'].value;
 
                   if (originalUrl) {
-                    _context.next = 4;
+                    _context.next = 5;
                     break;
                   }
 
                   return _context.abrupt("return");
 
-                case 4:
+                case 5:
                   if (_validator.default.isURL(originalUrl)) {
-                    _context.next = 6;
+                    _context.next = 7;
                     break;
                   }
 
                   return _context.abrupt("return", (0, _showAlert.showAlert)('error', 'Please enter a valid URL!'));
 
-                case 6:
+                case 7:
                   if (!originalUrl.includes(window.location.hostname)) {
-                    _context.next = 8;
+                    _context.next = 9;
                     break;
                   }
 
                   return _context.abrupt("return", (0, _showAlert.showAlert)('error', 'Already a valid Su.ly URL!'));
 
-                case 8:
-                  _context.next = 10;
+                case 9:
+                  _context.next = 11;
                   return (0, _manageUrls.createUrlForLoggedInUser)(originalUrl, _this.createUrlForm.dataset.user);
 
-                case 10:
+                case 11:
                   _yield$createUrlForLo = _context.sent;
                   data = _yield$createUrlForLo.data;
 
@@ -10484,13 +10487,22 @@ var Dashboard = /*#__PURE__*/function () {
                   _this.generateAndRenderMarkup();
 
                   _this.createUrlForm['url'].value = '';
+                  _context.next = 23;
+                  break;
 
-                case 15:
+                case 18:
+                  _context.prev = 18;
+                  _context.t0 = _context["catch"](0);
+                  msg = '';
+                  if (_context.t0.message.includes('429')) msg = 'Too many requests from the same IP. Please try again in an hour.';
+                  (0, _showAlert.showAlert)('error', "Something went wrong. ".concat(msg || _context.t0.response.data.message));
+
+                case 23:
                 case "end":
                   return _context.stop();
               }
             }
-          }, _callee);
+          }, _callee, null, [[0, 18]]);
         }));
 
         return function (_x) {
@@ -10579,7 +10591,7 @@ var Dashboard = /*#__PURE__*/function () {
                   id = e.target.closest('.table__data-row').dataset.id;
                   _context4.next = 6;
                   return (0, _sweetalert.default)({
-                    text: 'Enter the short custom code. It should be unique. The shorter, the better!',
+                    text: 'Enter the short custom code. It should be unique. Special characters are not allowed The shorter, the better!',
                     content: 'input',
                     button: {
                       text: 'Update!',
@@ -10601,10 +10613,21 @@ var Dashboard = /*#__PURE__*/function () {
                               throw null;
 
                             case 2:
-                              _context3.next = 4;
+                              if (!(code.match(/\W|_/g) && code.match(/\W|_/g).length > 0)) {
+                                _context3.next = 6;
+                                break;
+                              }
+
+                              _sweetalert.default.close();
+
+                              (0, _showAlert.showAlert)('error', 'Code must not contain special character!');
+                              throw null;
+
+                            case 6:
+                              _context3.next = 8;
                               return (0, _manageUrls.updateUrl)(id, code);
 
-                            case 4:
+                            case 8:
                               _yield$updateUrl = _context3.sent;
                               data = _yield$updateUrl.data;
                               _this3.urls = _this3.urls.map(function (url) {
@@ -10616,7 +10639,7 @@ var Dashboard = /*#__PURE__*/function () {
 
                               _sweetalert.default.close();
 
-                            case 9:
+                            case 13:
                             case "end":
                               return _context3.stop();
                           }
@@ -10955,7 +10978,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63071" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60121" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

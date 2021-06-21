@@ -1,4 +1,5 @@
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const urlController = require('../controllers/urlController');
 const anonymousUrlRouter = require('./anonymousUrlRoutes');
 const authController = require('../controllers/authController');
@@ -13,7 +14,11 @@ router.use(authController.protect);
 router
   .route('/')
   .get(urlController.getAllUrls)
-  .post(urlController.createNewUrl);
+  .post(rateLimit({
+    max: 50,
+    windowMs: 1000 * 60 * 60,  // 1 hr
+    message: 'Too many requests from the same IP, please try again in an hour!'
+  }), urlController.createNewUrl);
 
 router
   .route('/:id')
