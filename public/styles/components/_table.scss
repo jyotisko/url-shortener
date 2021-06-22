@@ -29,4 +29,9 @@
     opacity: 0.8;
     color: $color-primary-2;
   }
+
+  &__body {
+    width: 100%;
+    position: relative;
+  }
 }

@@ -10416,28 +10416,57 @@ var Dashboard = /*#__PURE__*/function () {
     this.createUrlForm = document.querySelector('#create-url-dashboard');
     this.tableBody = document.querySelector('.table__body');
     this.urls = [];
+    this.resultsPerPage = 5;
+    this.currentPage = 1;
+    this.numPages = 0;
     this.init();
   }
 
   _createClass(Dashboard, [{
-    key: "generateAndRenderMarkup",
-    value: function generateAndRenderMarkup() {
-      var markup = this.urls.map(function (url, i) {
-        var shortUrl = "".concat(window.location.host, "/c/").concat(url.shortCode, " ");
-        return "\n        <tr data-id='".concat(url._id, "' class='table__row table__data-row'>\n          <td>").concat(i + 1, "</td>\n          <td> \n            <a href='http://").concat(shortUrl, "' class='table__link'>").concat(shortUrl, "</a>\n          </td>\n          <td> \n            <a href='http://").concat(url.originalUrl.replace(/(^\w+:|^)\/\//, ''), "' class='table__link'>").concat(url.originalUrl, "</a>\n          </td>\n          <td>").concat(url.clicks, "</td>\n          <td class='table__options'>\n            <i class='icon icon--delete far fa-trash-alt'></i>\n            <i class='icon icon--edit far fa-edit'></i>\n          </td>\n        </tr>\n      ");
-      }).join('');
-      this.tableBody.innerHTML = markup;
-    }
-  }, {
     key: "init",
     value: function init() {
       this.urls = JSON.parse(this.tableBody.dataset.urls);
-      this.generateAndRenderMarkup();
+      this.calculatePages();
+      this.renderResultByPage(1);
+    }
+  }, {
+    key: "generateAndRenderMarkup",
+    value: function generateAndRenderMarkup() {
+      var urls = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.urls;
+      var markup = urls.map(function (url, i) {
+        var shortUrl = "".concat(window.location.host, "/c/").concat(url.shortCode, " ");
+        return "\n        <tr data-id='".concat(url._id, "' class='table__row table__data-row'>\n          <td>").concat(i + 1, "</td>\n          <td> \n            <a href='http://").concat(shortUrl, "' class='table__link'>").concat(shortUrl, "</a>\n          </td>\n          <td> \n            <a href='http://").concat(url.originalUrl.replace(/(^\w+:|^)\/\//, ''), "' class='table__link'>").concat(url.originalUrl, "</a>\n          </td>\n          <td>").concat(url.clicks, "</td>\n          <td class='table__options'>\n            <i class='icon icon--delete far fa-trash-alt'></i>\n            <i class='icon icon--edit far fa-edit'></i>\n          </td>\n        </tr>\n      ");
+      }).join('');
+      markup += "\n      <div class='pagination'>  \n        ".concat(this.currentPage !== 1 ? "<button class='pagination__btn pagination__btn--left btn btn--fill'>&larr; ".concat(this.currentPage - 1, "</button>") : '', "\n        ").concat(this.numPages <= this.currentPage ? '' : "<button class='pagination__btn pagination__btn--right btn btn--fill'>".concat(this.currentPage + 1, " &rarr;</button>"), "\n      </div>\n    ");
+      this.tableBody.innerHTML = markup;
+      this.addHandlerPaginate();
+    }
+  }, {
+    key: "addHandlerPaginate",
+    value: function addHandlerPaginate() {
+      var _this = this;
+
+      var paginateBtns = document.querySelectorAll('.pagination__btn');
+      paginateBtns.forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          if (e.target.classList.contains('pagination__btn--left')) {
+            _this.currentPage -= 1;
+
+            _this.renderResultByPage();
+          }
+
+          if (e.target.classList.contains('pagination__btn--right')) {
+            _this.currentPage += 1;
+
+            _this.renderResultByPage();
+          }
+        });
+      });
     }
   }, {
     key: "addHandlerCreate",
     value: function addHandlerCreate() {
-      var _this = this;
+      var _this2 = this;
 
       this.createUrlForm.addEventListener('click', /*#__PURE__*/function () {
         var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
@@ -10449,7 +10478,7 @@ var Dashboard = /*#__PURE__*/function () {
                 case 0:
                   _context.prev = 0;
                   e.preventDefault();
-                  originalUrl = _this.createUrlForm['url'].value;
+                  originalUrl = _this2.createUrlForm['url'].value;
 
                   if (originalUrl) {
                     _context.next = 5;
@@ -10476,17 +10505,17 @@ var Dashboard = /*#__PURE__*/function () {
 
                 case 9:
                   _context.next = 11;
-                  return (0, _manageUrls.createUrlForLoggedInUser)(originalUrl, _this.createUrlForm.dataset.user);
+                  return (0, _manageUrls.createUrlForLoggedInUser)(originalUrl, _this2.createUrlForm.dataset.user);
 
                 case 11:
                   _yield$createUrlForLo = _context.sent;
                   data = _yield$createUrlForLo.data;
 
-                  _this.urls.unshift(data.url);
+                  _this2.urls.unshift(data.url);
 
-                  _this.generateAndRenderMarkup();
+                  _this2.renderResultByPage();
 
-                  _this.createUrlForm['url'].value = '';
+                  _this2.createUrlForm['url'].value = '';
                   _context.next = 23;
                   break;
 
@@ -10513,7 +10542,7 @@ var Dashboard = /*#__PURE__*/function () {
   }, {
     key: "addHandlerDelete",
     value: function addHandlerDelete() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.tableBody.addEventListener('click', /*#__PURE__*/function () {
         var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(e) {
@@ -10539,11 +10568,11 @@ var Dashboard = /*#__PURE__*/function () {
 
                 case 7:
                   (0, _showAlert.showAlert)('success', 'Successfully deleted!');
-                  _this2.urls = _this2.urls.filter(function (url) {
+                  _this3.urls = _this3.urls.filter(function (url) {
                     return url._id !== id;
                   });
 
-                  _this2.generateAndRenderMarkup();
+                  _this3.renderResultByPage();
 
                   _context2.next = 15;
                   break;
@@ -10569,7 +10598,7 @@ var Dashboard = /*#__PURE__*/function () {
   }, {
     key: "addHandlerEdit",
     value: function addHandlerEdit() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.tableBody.addEventListener('click', /*#__PURE__*/function () {
         var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(e) {
@@ -10630,12 +10659,12 @@ var Dashboard = /*#__PURE__*/function () {
                             case 8:
                               _yield$updateUrl = _context3.sent;
                               data = _yield$updateUrl.data;
-                              _this3.urls = _this3.urls.map(function (url) {
+                              _this4.urls = _this4.urls.map(function (url) {
                                 if (url._id === id) return data.url;
                                 return url;
                               });
 
-                              _this3.generateAndRenderMarkup();
+                              _this4.renderResultByPage();
 
                               _sweetalert.default.close();
 
@@ -10681,6 +10710,21 @@ var Dashboard = /*#__PURE__*/function () {
           return _ref3.apply(this, arguments);
         };
       }());
+    }
+  }, {
+    key: "calculatePages",
+    value: function calculatePages() {
+      var urls = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.urls;
+      return this.numPages = Math.ceil(urls.length / this.resultsPerPage);
+    }
+  }, {
+    key: "renderResultByPage",
+    value: function renderResultByPage() {
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.currentPage;
+      this.calculatePages();
+      var skip = page * this.resultsPerPage - this.resultsPerPage;
+      var urls = this.urls.slice(skip).slice(0, this.resultsPerPage);
+      this.generateAndRenderMarkup(urls);
     }
   }]);
 
@@ -10978,7 +11022,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60121" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56818" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

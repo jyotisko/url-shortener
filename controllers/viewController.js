@@ -33,7 +33,7 @@ exports.getSignupPage = (req, res) => {
 };
 
 exports.getDashboard = (async (req, res, next) => {
-  const urls = await Url.find({ user: req.user._id });
+  const urls = await Url.find({ user: req.user._id }).sort('-createdAt');
   res.status(200).render('dashboard', {
     title: 'Dashboard',
     urls: urls,

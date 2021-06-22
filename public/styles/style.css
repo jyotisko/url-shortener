@@ -214,6 +214,9 @@ a {
     font-weight: 500;
     opacity: 0.8;
     color: #e06060; }
+  .table__body {
+    width: 100%;
+    position: relative; }
 
 .icon {
   color: #E46D6D;
@@ -224,6 +227,20 @@ a {
     color: rgba(228, 109, 109, 0.5); }
   .icon:not(:last-child) {
     margin-right: 1rem; }
+
+.pagination {
+  padding: 3rem 0; }
+  .pagination__btn {
+    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-content: center; }
+  .pagination__btn--left {
+    position: absolute;
+    left: 0; }
+  .pagination__btn--right {
+    position: absolute;
+    right: 0; }
 
 .nav {
   height: 10vh;

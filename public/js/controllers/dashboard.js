@@ -8,15 +8,24 @@ class Dashboard {
     this.createUrlForm = document.querySelector('#create-url-dashboard');
     this.tableBody = document.querySelector('.table__body');
     this.urls = [];
+    this.resultsPerPage = 30;
+    this.currentPage = 1;
+    this.numPages = 0;
     this.init();
   }
 
-  generateAndRenderMarkup() {
-    const markup = this.urls.map((url, i) => {
+  init() {
+    this.urls = JSON.parse(this.tableBody.dataset.urls);
+    this.calculatePages();
+    this.renderResultByPage(1);
+  }
+
+  generateAndRenderMarkup(urls = this.urls) {
+    let markup = urls.map((url, i) => {
       const shortUrl = `${window.location.host}/c/${url.shortCode} `;
       return `
         <tr data-id='${url._id}' class='table__row table__data-row'>
-          <td>${i + 1}</td>
+          <td>${(i + 1)}</td>
           <td> 
             <a href='http://${shortUrl}' class='table__link'>${shortUrl}</a>
           </td>
@@ -32,12 +41,32 @@ class Dashboard {
       `;
     }).join('');
 
+    markup += `
+      <div class='pagination'>  
+        ${this.currentPage !== 1 ? `<button class='pagination__btn pagination__btn--left btn btn--fill'>&larr; ${this.currentPage - 1}</button>` : ''}
+        ${this.numPages <= this.currentPage ? '' : `<button class='pagination__btn pagination__btn--right btn btn--fill'>${this.currentPage + 1} &rarr;</button>`}
+      </div>
+    `;
+
     this.tableBody.innerHTML = markup;
+    this.addHandlerPaginate();
   };
 
-  init() {
-    this.urls = JSON.parse(this.tableBody.dataset.urls);
-    this.generateAndRenderMarkup();
+
+  addHandlerPaginate() {
+    const paginateBtns = document.querySelectorAll('.pagination__btn');
+    paginateBtns.forEach(btn => {
+      btn.addEventListener('click', e => {
+        if (e.target.classList.contains('pagination__btn--left')) {
+          this.currentPage -= 1;
+          this.renderResultByPage();
+        }
+        if (e.target.classList.contains('pagination__btn--right')) {
+          this.currentPage += 1;
+          this.renderResultByPage();
+        }
+      });
+    });
   }
 
   addHandlerCreate() {
@@ -51,7 +80,7 @@ class Dashboard {
 
         const { data } = await createUrlForLoggedInUser(originalUrl, this.createUrlForm.dataset.user);
         this.urls.unshift(data.url);
-        this.generateAndRenderMarkup();
+        this.renderResultByPage();
         this.createUrlForm['url'].value = '';
       } catch (err) {
         let msg = '';
@@ -70,7 +99,7 @@ class Dashboard {
         await deleteUrl(id);
         showAlert('success', 'Successfully deleted!');
         this.urls = this.urls.filter(url => url._id !== id);
-        this.generateAndRenderMarkup();
+        this.renderResultByPage();
 
       } catch (err) {
         showAlert('error', 'Something went wrong. Please try again later.');
@@ -103,7 +132,7 @@ class Dashboard {
             if (url._id === id) return data.url;
             return url;
           });
-          this.generateAndRenderMarkup();
+          this.renderResultByPage();
           swal.close();
         }).catch(err => {
           if (err) {
@@ -118,6 +147,17 @@ class Dashboard {
         showAlert('error', err);
       }
     });
+  }
+
+  calculatePages(urls = this.urls) {
+    return this.numPages = Math.ceil(urls.length / this.resultsPerPage);
+  }
+
+  renderResultByPage(page = this.currentPage) {
+    this.calculatePages();
+    const skip = (page * this.resultsPerPage) - this.resultsPerPage;
+    const urls = this.urls.slice(skip).slice(0, this.resultsPerPage);
+    this.generateAndRenderMarkup(urls);
   }
 };
 
