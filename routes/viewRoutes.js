@@ -5,8 +5,8 @@ const authController = require('../controllers/authController');
 const router = express.Router();
 
 router.get('/', authController.isLoggedIn, viewController.getHomePage);
-router.get('/login', viewController.getLoginPage);
-router.get('/signup', viewController.getSignupPage);
+router.get('/login', authController.isLoggedIn, viewController.getLoginPage);
+router.get('/signup', authController.isLoggedIn, viewController.getSignupPage);
 router.get('/c/:code', viewController.redirectToOriginalUrl);
 
 router.get('/dashboard', authController.protect, viewController.getDashboard);

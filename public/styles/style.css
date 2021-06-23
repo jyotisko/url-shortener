@@ -61,7 +61,9 @@ a {
   font-weight: 600;
   padding: 0.7rem 4rem;
   transition: all 0.4s ease;
-  cursor: pointer; }
+  cursor: pointer;
+  background-color: #fff;
+  outline: none; }
   .btn--fill {
     background-color: #E46D6D;
     border: 3px solid #E46D6D;

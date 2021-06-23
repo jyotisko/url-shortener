@@ -4,6 +4,8 @@
   padding: 0.7rem 4rem;
   transition: all 0.4s ease;
   cursor: pointer;
+  background-color: $color-white-3;
+  outline: none;
 
   &--fill {
     background-color: $color-primary-1;

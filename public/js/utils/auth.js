@@ -21,6 +21,24 @@ export const authenticate = async (type, data) => {
     }
   } catch (err) {
     showAlert('error', `Something went wrong. ${err.response.data.message}`);
-    console.log(err);
+  }
+};
+
+export const logout = async () => {
+  try {
+    const res = await axios({
+      method: 'GET',
+      url: '/api/v1/users/logout'
+    });
+
+    if (res.data.status === 'success') {
+      showAlert('success', 'You have been successfully logged out!');
+      setTimeout(() => {
+        window.location.assign('/');
+      }, 2000);
+    }
+
+  } catch (err) {
+    throw err;
   }
 };

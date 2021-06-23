@@ -10215,7 +10215,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.authenticate = void 0;
+exports.logout = exports.authenticate = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -10256,16 +10256,15 @@ var authenticate = /*#__PURE__*/function () {
               }, 3000);
             }
 
-            _context.next = 12;
+            _context.next = 11;
             break;
 
           case 8:
             _context.prev = 8;
             _context.t0 = _context["catch"](0);
             (0, _showAlert.showAlert)('error', "Something went wrong. ".concat(_context.t0.response.data.message));
-            console.log(_context.t0);
 
-          case 12:
+          case 11:
           case "end":
             return _context.stop();
         }
@@ -10279,6 +10278,53 @@ var authenticate = /*#__PURE__*/function () {
 }();
 
 exports.authenticate = authenticate;
+
+var logout = /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+    var res;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.prev = 0;
+            _context2.next = 3;
+            return (0, _axios.default)({
+              method: 'GET',
+              url: '/api/v1/users/logout'
+            });
+
+          case 3:
+            res = _context2.sent;
+
+            if (res.data.status === 'success') {
+              (0, _showAlert.showAlert)('success', 'You have been successfully logged out!');
+              setTimeout(function () {
+                window.location.assign('/');
+              }, 2000);
+            }
+
+            _context2.next = 10;
+            break;
+
+          case 7:
+            _context2.prev = 7;
+            _context2.t0 = _context2["catch"](0);
+            throw _context2.t0;
+
+          case 10:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, null, [[0, 7]]);
+  }));
+
+  return function logout() {
+    return _ref2.apply(this, arguments);
+  };
+}();
+
+exports.logout = logout;
 },{"axios":"../../node_modules/axios/index.js","./showAlert":"utils/showAlert.js"}],"controllers/loginController.js":[function(require,module,exports) {
 "use strict";
 
@@ -10956,7 +11002,54 @@ var updatePassword = function updatePassword(form) {
 };
 
 exports.updatePassword = updatePassword;
-},{"validator":"../../node_modules/validator/index.js","../utils/showAlert":"utils/showAlert.js","../utils/updateData":"utils/updateData.js"}],"index.js":[function(require,module,exports) {
+},{"validator":"../../node_modules/validator/index.js","../utils/showAlert":"utils/showAlert.js","../utils/updateData":"utils/updateData.js"}],"controllers/logoutController.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _auth = require("../utils/auth");
+
+var _showAlert = require("../utils/showAlert");
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var logoutController = function logoutController(logoutBtn) {
+  logoutBtn.addEventListener('click', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.prev = 0;
+            logoutBtn.classList.add('btn--disabled');
+            _context.next = 4;
+            return (0, _auth.logout)();
+
+          case 4:
+            _context.next = 9;
+            break;
+
+          case 6:
+            _context.prev = 6;
+            _context.t0 = _context["catch"](0);
+            (0, _showAlert.showAlert)('error', "Something went wrong! ".concat(_context.t0.response.data.message));
+
+          case 9:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, null, [[0, 6]]);
+  })));
+};
+
+var _default = logoutController;
+exports.default = _default;
+},{"../utils/auth":"utils/auth.js","../utils/showAlert":"utils/showAlert.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 require("regenerator-runtime");
@@ -10971,6 +11064,8 @@ var _dashboard = _interopRequireDefault(require("./controllers/dashboard"));
 
 var _updateDataController = require("./controllers/updateDataController");
 
+var _logoutController = _interopRequireDefault(require("./controllers/logoutController"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // DOM Elements
@@ -10979,7 +11074,8 @@ var signupForm = document.querySelector('.form--signup');
 var createAnonymousUrlForm = document.querySelector('#home-create-url');
 var dashboardEl = document.querySelector('.main--dashboard');
 var updateUserDataForm = document.querySelector('.form--data');
-var updatePasswordForm = document.querySelector('.form--password'); // Delegations 
+var updatePasswordForm = document.querySelector('.form--password');
+var logoutBtn = document.querySelector('.nav__link--logout'); // Delegations 
 
 if (loginForm) {
   (0, _loginController.default)(loginForm);
@@ -11007,7 +11103,11 @@ if (updateUserDataForm) {
 if (updatePasswordForm) {
   (0, _updateDataController.updatePassword)(updatePasswordForm);
 }
-},{"regenerator-runtime":"../../node_modules/regenerator-runtime/runtime.js","./controllers/createAnonymousUrl":"controllers/createAnonymousUrl.js","./controllers/loginController":"controllers/loginController.js","./controllers/signupController":"controllers/signupController.js","./controllers/dashboard":"controllers/dashboard.js","./controllers/updateDataController":"controllers/updateDataController.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
+if (logoutBtn) {
+  (0, _logoutController.default)(logoutBtn);
+}
+},{"regenerator-runtime":"../../node_modules/regenerator-runtime/runtime.js","./controllers/createAnonymousUrl":"controllers/createAnonymousUrl.js","./controllers/loginController":"controllers/loginController.js","./controllers/signupController":"controllers/signupController.js","./controllers/dashboard":"controllers/dashboard.js","./controllers/updateDataController":"controllers/updateDataController.js","./controllers/logoutController":"controllers/logoutController.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -11035,7 +11135,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60780" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57617" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
