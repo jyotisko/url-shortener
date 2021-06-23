@@ -8,7 +8,7 @@ class Dashboard {
     this.createUrlForm = document.querySelector('#create-url-dashboard');
     this.tableBody = document.querySelector('.table__body');
     this.urls = [];
-    this.resultsPerPage = 30;
+    this.resultsPerPage = 100;
     this.currentPage = 1;
     this.numPages = 0;
     this.init();
@@ -21,11 +21,12 @@ class Dashboard {
   }
 
   generateAndRenderMarkup(urls = this.urls) {
+    const serialIndexNumbers = this.generateSerialIndexNumbers();
     let markup = urls.map((url, i) => {
       const shortUrl = `${window.location.host}/c/${url.shortCode} `;
       return `
         <tr data-id='${url._id}' class='table__row table__data-row'>
-          <td>${(i + 1)}</td>
+          <td>${serialIndexNumbers[i]}</td>
           <td> 
             <a href='http://${shortUrl}' class='table__link'>${shortUrl}</a>
           </td>
@@ -44,6 +45,7 @@ class Dashboard {
     markup += `
       <div class='pagination'>  
         ${this.currentPage !== 1 ? `<button class='pagination__btn pagination__btn--left btn btn--fill'>&larr; ${this.currentPage - 1}</button>` : ''}
+        <span class='pagination__page'>Page ${this.currentPage} of ${this.numPages}</span>
         ${this.numPages <= this.currentPage ? '' : `<button class='pagination__btn pagination__btn--right btn btn--fill'>${this.currentPage + 1} &rarr;</button>`}
       </div>
     `;
@@ -151,6 +153,15 @@ class Dashboard {
 
   calculatePages(urls = this.urls) {
     return this.numPages = Math.ceil(urls.length / this.resultsPerPage);
+  }
+
+  generateSerialIndexNumbers(page = this.currentPage) {
+    const indexArr = [];
+    for (let i = 1; i <= this.resultsPerPage; i++) {
+      indexArr.push(page * this.resultsPerPage - this.resultsPerPage + i);
+    }
+
+    return indexArr;
   }
 
   renderResultByPage(page = this.currentPage) {

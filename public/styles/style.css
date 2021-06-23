@@ -241,6 +241,13 @@ a {
   .pagination__btn--right {
     position: absolute;
     right: 0; }
+  .pagination__page {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2rem;
+    bottom: -2%;
+    text-decoration: underline 2px solid #E46D6D; }
 
 .nav {
   height: 10vh;

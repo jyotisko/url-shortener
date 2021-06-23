@@ -10416,7 +10416,7 @@ var Dashboard = /*#__PURE__*/function () {
     this.createUrlForm = document.querySelector('#create-url-dashboard');
     this.tableBody = document.querySelector('.table__body');
     this.urls = [];
-    this.resultsPerPage = 5;
+    this.resultsPerPage = 100;
     this.currentPage = 1;
     this.numPages = 0;
     this.init();
@@ -10433,11 +10433,12 @@ var Dashboard = /*#__PURE__*/function () {
     key: "generateAndRenderMarkup",
     value: function generateAndRenderMarkup() {
       var urls = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.urls;
+      var serialIndexNumbers = this.generateSerialIndexNumbers();
       var markup = urls.map(function (url, i) {
         var shortUrl = "".concat(window.location.host, "/c/").concat(url.shortCode, " ");
-        return "\n        <tr data-id='".concat(url._id, "' class='table__row table__data-row'>\n          <td>").concat(i + 1, "</td>\n          <td> \n            <a href='http://").concat(shortUrl, "' class='table__link'>").concat(shortUrl, "</a>\n          </td>\n          <td> \n            <a href='http://").concat(url.originalUrl.replace(/(^\w+:|^)\/\//, ''), "' class='table__link'>").concat(url.originalUrl, "</a>\n          </td>\n          <td>").concat(url.clicks, "</td>\n          <td class='table__options'>\n            <i class='icon icon--delete far fa-trash-alt'></i>\n            <i class='icon icon--edit far fa-edit'></i>\n          </td>\n        </tr>\n      ");
+        return "\n        <tr data-id='".concat(url._id, "' class='table__row table__data-row'>\n          <td>").concat(serialIndexNumbers[i], "</td>\n          <td> \n            <a href='http://").concat(shortUrl, "' class='table__link'>").concat(shortUrl, "</a>\n          </td>\n          <td> \n            <a href='http://").concat(url.originalUrl.replace(/(^\w+:|^)\/\//, ''), "' class='table__link'>").concat(url.originalUrl, "</a>\n          </td>\n          <td>").concat(url.clicks, "</td>\n          <td class='table__options'>\n            <i class='icon icon--delete far fa-trash-alt'></i>\n            <i class='icon icon--edit far fa-edit'></i>\n          </td>\n        </tr>\n      ");
       }).join('');
-      markup += "\n      <div class='pagination'>  \n        ".concat(this.currentPage !== 1 ? "<button class='pagination__btn pagination__btn--left btn btn--fill'>&larr; ".concat(this.currentPage - 1, "</button>") : '', "\n        ").concat(this.numPages <= this.currentPage ? '' : "<button class='pagination__btn pagination__btn--right btn btn--fill'>".concat(this.currentPage + 1, " &rarr;</button>"), "\n      </div>\n    ");
+      markup += "\n      <div class='pagination'>  \n        ".concat(this.currentPage !== 1 ? "<button class='pagination__btn pagination__btn--left btn btn--fill'>&larr; ".concat(this.currentPage - 1, "</button>") : '', "\n        <span class='pagination__page'>Page ").concat(this.currentPage, " of ").concat(this.numPages, "</span>\n        ").concat(this.numPages <= this.currentPage ? '' : "<button class='pagination__btn pagination__btn--right btn btn--fill'>".concat(this.currentPage + 1, " &rarr;</button>"), "\n      </div>\n    ");
       this.tableBody.innerHTML = markup;
       this.addHandlerPaginate();
     }
@@ -10716,6 +10717,18 @@ var Dashboard = /*#__PURE__*/function () {
     value: function calculatePages() {
       var urls = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.urls;
       return this.numPages = Math.ceil(urls.length / this.resultsPerPage);
+    }
+  }, {
+    key: "generateSerialIndexNumbers",
+    value: function generateSerialIndexNumbers() {
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.currentPage;
+      var indexArr = [];
+
+      for (var i = 1; i <= this.resultsPerPage; i++) {
+        indexArr.push(page * this.resultsPerPage - this.resultsPerPage + i);
+      }
+
+      return indexArr;
     }
   }, {
     key: "renderResultByPage",
@@ -11022,7 +11035,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56818" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60780" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

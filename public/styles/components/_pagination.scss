@@ -18,4 +18,13 @@
     position: absolute;
     right: 0;
   }
+
+  &__page {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2rem;
+    bottom: -2%;
+    text-decoration: underline 2px solid $color-primary-1;
+  }
 }
