@@ -29,7 +29,8 @@ exports.signup = catchAsync(async (req, res, next) => {
   const token = createToken(user._id);
 
   try {
-    await new Email(user, 'https://localhost:3000').sendWelcome();
+    const email = new Email(user, `${req.protocol}://${req.get('host')}`)
+    await email.sendWelcome();
   } catch (err) {
     console.log(`💥💥💥 ${err}`);
   }

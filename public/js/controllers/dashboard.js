@@ -164,7 +164,7 @@ class Dashboard {
       } catch (err) {
         showAlert('error', 'Something went wrong while copying the URL!');
       }
-    })
+    });
   }
 
   calculatePages(urls = this.urls) {

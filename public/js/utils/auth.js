@@ -20,7 +20,7 @@ export const authenticate = async (type, data) => {
       }, 3000);
     }
   } catch (err) {
-    showAlert('error', `Something went wrong. ${err.response.data.message}`);
+    throw err;
   }
 };
 

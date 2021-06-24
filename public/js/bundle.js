@@ -10263,7 +10263,7 @@ var authenticate = /*#__PURE__*/function () {
           case 8:
             _context.prev = 8;
             _context.t0 = _context["catch"](0);
-            (0, _showAlert.showAlert)('error', "Something went wrong. ".concat(_context.t0.response.data.message));
+            throw _context.t0;
 
           case 11:
           case "end":
@@ -10336,30 +10336,46 @@ exports.default = void 0;
 
 var _auth = require("../utils/auth");
 
+var _showAlert = require("../utils/showAlert");
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 var _default = function _default(loginForm) {
+  var loginSubmitBtn = document.querySelector('.btn--submit-login');
   loginForm.addEventListener('submit', /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
+              _context.prev = 0;
               e.preventDefault();
-              _context.next = 3;
+              loginSubmitBtn.classList.add('btn--disabled');
+              _context.next = 5;
               return (0, _auth.authenticate)('login', {
                 email: loginForm['email'].value,
                 password: loginForm['password'].value
               });
 
-            case 3:
+            case 5:
+              loginSubmitBtn.classList.remove('btn--disabled');
+              _context.next = 12;
+              break;
+
+            case 8:
+              _context.prev = 8;
+              _context.t0 = _context["catch"](0);
+              loginSubmitBtn.classList.remove('btn--disabled');
+              (0, _showAlert.showAlert)('error', "Something went wrong! ".concat(_context.t0.response.data.message || ''));
+
+            case 12:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee);
+      }, _callee, null, [[0, 8]]);
     }));
 
     return function (_x) {
@@ -10369,7 +10385,7 @@ var _default = function _default(loginForm) {
 };
 
 exports.default = _default;
-},{"../utils/auth":"utils/auth.js"}],"controllers/signupController.js":[function(require,module,exports) {
+},{"../utils/auth":"utils/auth.js","../utils/showAlert":"utils/showAlert.js"}],"controllers/signupController.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10386,23 +10402,26 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 var _default = function _default(signupForm) {
+  var signupSumbitBtn = document.querySelector('.btn--submit-signup');
   signupForm.addEventListener('submit', /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
+              _context.prev = 0;
               e.preventDefault();
 
               if (!(signupForm['password'].value !== signupForm['passwordConfirm'].value)) {
-                _context.next = 3;
+                _context.next = 4;
                 break;
               }
 
               return _context.abrupt("return", (0, _showAlert.showAlert)('error', 'The passwords do not match!'));
 
-            case 3:
-              _context.next = 5;
+            case 4:
+              signupSumbitBtn.classList.add('btn--disabled');
+              _context.next = 7;
               return (0, _auth.authenticate)('signup', {
                 name: signupForm['name'].value,
                 email: signupForm['email'].value,
@@ -10410,12 +10429,23 @@ var _default = function _default(signupForm) {
                 passwordConfirm: signupForm['passwordConfirm'].value
               });
 
-            case 5:
+            case 7:
+              signupSumbitBtn.classList.remove('btn--disabled');
+              _context.next = 14;
+              break;
+
+            case 10:
+              _context.prev = 10;
+              _context.t0 = _context["catch"](0);
+              signupSumbitBtn.classList.remove('btn--disabled');
+              (0, _showAlert.showAlert)('error', "Something went wrong! ".concat(_context.t0.response.data.message || ''));
+
+            case 14:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee);
+      }, _callee, null, [[0, 10]]);
     }));
 
     return function (_x) {
@@ -11184,7 +11214,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55322" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58727" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
