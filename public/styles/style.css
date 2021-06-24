@@ -222,13 +222,16 @@ a {
 
 .icon {
   color: #E46D6D;
-  cursor: pointer; }
+  cursor: pointer;
+  transition: transform 2s ease; }
   .icon--disabled {
     cursor: not-allowed;
     pointer-events: none;
     color: rgba(228, 109, 109, 0.5); }
   .icon:not(:last-child) {
     margin-right: 1rem; }
+  .icon:hover {
+    transform: scale(1.02); }
 
 .pagination {
   padding: 3rem 0; }

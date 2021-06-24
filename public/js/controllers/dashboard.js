@@ -28,7 +28,7 @@ class Dashboard {
         <tr data-id='${url._id}' class='table__row table__data-row'>
           <td>${serialIndexNumbers[i]}</td>
           <td> 
-            <a href='http://${shortUrl}' class='table__link'>${shortUrl}</a>
+            <a href='http://${shortUrl}' class='table__link table__link--short'>${shortUrl}</a>
           </td>
           <td> 
             <a href='http://${url.originalUrl.replace(/(^\w+:|^)\/\//, '')}' class='table__link'>${url.originalUrl}</a>
@@ -37,6 +37,7 @@ class Dashboard {
           <td class='table__options'>
             <i class='icon icon--delete far fa-trash-alt'></i>
             <i class='icon icon--edit far fa-edit'></i>
+            <i class="icon icon--copy far fa-copy"></i>
           </td>
         </tr>
       `;
@@ -149,6 +150,21 @@ class Dashboard {
         showAlert('error', err);
       }
     });
+  }
+
+  addHandlerCopy() {
+    this.tableBody.addEventListener('click', async e => {
+      try {
+        if (!e.target.classList.contains('icon--copy')) return;
+
+        const urlToCopy = e.target.closest('.table__data-row').querySelector('.table__link--short').textContent;
+        await navigator.clipboard.writeText(urlToCopy);
+        showAlert('success', 'Copied!', 1);
+
+      } catch (err) {
+        showAlert('error', 'Something went wrong while copying the URL!');
+      }
+    })
   }
 
   calculatePages(urls = this.urls) {

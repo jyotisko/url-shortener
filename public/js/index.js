@@ -33,6 +33,7 @@ if (dashboardEl) {
   dashboard.addHandlerCreate();
   dashboard.addHandlerDelete();
   dashboard.addHandlerEdit();
+  dashboard.addHandlerCopy();
 }
 
 if (updateUserDataForm) {

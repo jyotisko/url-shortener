@@ -1,6 +1,7 @@
 .icon {
   color: $color-primary-1;
   cursor: pointer;
+  transition: transform 2s ease;
 
   &--disabled {
     cursor: not-allowed;
@@ -10,5 +11,9 @@
 
   &:not(:last-child) {
     margin-right: 1rem;
+  }
+
+  &:hover {
+    transform: scale(1.02);
   }
 }

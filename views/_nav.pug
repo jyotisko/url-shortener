@@ -4,8 +4,8 @@ nav.nav
   
   .nav__right 
     if user   
-      button.nav__link.nav__link--logout.btn.btn--outlined Logout
       a(href='/account').nav__link.nav__link--user.btn.btn--fill Profile
+      button.nav__link.nav__link--logout.btn.btn--outlined Logout
         //- h1.nav__user-name= user.name
     else
       a(href='/login').nav__link.nav__link--login.btn.btn--outlined Login

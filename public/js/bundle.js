@@ -8076,18 +8076,19 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.showAlert = void 0;
 
-var removeAlert = function removeAlert() {
+var removeAlert = function removeAlert(duration) {
   setTimeout(function () {
     document.querySelector('.alert').remove();
-  }, 3000);
+  }, duration * 1000);
 }; // @params 'type': can be 'error' or 'success'
 // @params 'message': String (any)
 
 
 var showAlert = function showAlert(type, message) {
+  var duration = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 5;
   var markup = "\n    <div class='alert alert--".concat(type, "'>\n      <h1>").concat(message, "</h1>\n    </div>\n  ");
   document.body.insertAdjacentHTML('beforebegin', markup);
-  removeAlert();
+  removeAlert(duration);
 };
 
 exports.showAlert = showAlert;
@@ -10482,7 +10483,7 @@ var Dashboard = /*#__PURE__*/function () {
       var serialIndexNumbers = this.generateSerialIndexNumbers();
       var markup = urls.map(function (url, i) {
         var shortUrl = "".concat(window.location.host, "/c/").concat(url.shortCode, " ");
-        return "\n        <tr data-id='".concat(url._id, "' class='table__row table__data-row'>\n          <td>").concat(serialIndexNumbers[i], "</td>\n          <td> \n            <a href='http://").concat(shortUrl, "' class='table__link'>").concat(shortUrl, "</a>\n          </td>\n          <td> \n            <a href='http://").concat(url.originalUrl.replace(/(^\w+:|^)\/\//, ''), "' class='table__link'>").concat(url.originalUrl, "</a>\n          </td>\n          <td>").concat(url.clicks, "</td>\n          <td class='table__options'>\n            <i class='icon icon--delete far fa-trash-alt'></i>\n            <i class='icon icon--edit far fa-edit'></i>\n          </td>\n        </tr>\n      ");
+        return "\n        <tr data-id='".concat(url._id, "' class='table__row table__data-row'>\n          <td>").concat(serialIndexNumbers[i], "</td>\n          <td> \n            <a href='http://").concat(shortUrl, "' class='table__link table__link--short'>").concat(shortUrl, "</a>\n          </td>\n          <td> \n            <a href='http://").concat(url.originalUrl.replace(/(^\w+:|^)\/\//, ''), "' class='table__link'>").concat(url.originalUrl, "</a>\n          </td>\n          <td>").concat(url.clicks, "</td>\n          <td class='table__options'>\n            <i class='icon icon--delete far fa-trash-alt'></i>\n            <i class='icon icon--edit far fa-edit'></i>\n            <i class=\"icon icon--copy far fa-copy\"></i>\n          </td>\n        </tr>\n      ");
       }).join('');
       markup += "\n      <div class='pagination'>  \n        ".concat(this.currentPage !== 1 ? "<button class='pagination__btn pagination__btn--left btn btn--fill'>&larr; ".concat(this.currentPage - 1, "</button>") : '', "\n        <span class='pagination__page'>Page ").concat(this.currentPage, " of ").concat(this.numPages, "</span>\n        ").concat(this.numPages <= this.currentPage ? '' : "<button class='pagination__btn pagination__btn--right btn btn--fill'>".concat(this.currentPage + 1, " &rarr;</button>"), "\n      </div>\n    ");
       this.tableBody.innerHTML = markup;
@@ -10755,6 +10756,53 @@ var Dashboard = /*#__PURE__*/function () {
 
         return function (_x3) {
           return _ref3.apply(this, arguments);
+        };
+      }());
+    }
+  }, {
+    key: "addHandlerCopy",
+    value: function addHandlerCopy() {
+      this.tableBody.addEventListener('click', /*#__PURE__*/function () {
+        var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(e) {
+          var urlToCopy;
+          return regeneratorRuntime.wrap(function _callee5$(_context5) {
+            while (1) {
+              switch (_context5.prev = _context5.next) {
+                case 0:
+                  _context5.prev = 0;
+
+                  if (e.target.classList.contains('icon--copy')) {
+                    _context5.next = 3;
+                    break;
+                  }
+
+                  return _context5.abrupt("return");
+
+                case 3:
+                  urlToCopy = e.target.closest('.table__data-row').querySelector('.table__link--short').textContent;
+                  _context5.next = 6;
+                  return navigator.clipboard.writeText(urlToCopy);
+
+                case 6:
+                  (0, _showAlert.showAlert)('success', 'Copied!', 1);
+                  _context5.next = 12;
+                  break;
+
+                case 9:
+                  _context5.prev = 9;
+                  _context5.t0 = _context5["catch"](0);
+                  (0, _showAlert.showAlert)('error', 'Something went wrong while copying the URL!');
+
+                case 12:
+                case "end":
+                  return _context5.stop();
+              }
+            }
+          }, _callee5, null, [[0, 9]]);
+        }));
+
+        return function (_x5) {
+          return _ref5.apply(this, arguments);
         };
       }());
     }
@@ -11094,6 +11142,7 @@ if (dashboardEl) {
   dashboard.addHandlerCreate();
   dashboard.addHandlerDelete();
   dashboard.addHandlerEdit();
+  dashboard.addHandlerCopy();
 }
 
 if (updateUserDataForm) {
@@ -11135,7 +11184,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57617" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55322" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
