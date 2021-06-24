@@ -8,7 +8,7 @@ exports.redirectToOriginalUrl = catchAsync(async (req, res, next) => {
   if (url) return res.redirect(`http://${url.originalUrl.replace(/(^\w+:|^)\/\//, '')}`);
 
   if (!url) url = await Url.findOne({ shortCode: req.params.code });
-  if (!url) return next(new AppError('Can not find this url!', 401));
+  if (!url) return next(new AppError('Can not find this url! Please ask the provider for a new URL.', 401));
 
   await Url.findByIdAndUpdate(url._id, { clicks: url.clicks + 1 });
   return res.redirect(`http://${url.originalUrl.replace(/(^\w+:|^)\/\//, '')}`);
@@ -32,14 +32,14 @@ exports.getSignupPage = (req, res) => {
   })
 };
 
-exports.getDashboard = (async (req, res, next) => {
+exports.getDashboard = async (req, res, next) => {
   const urls = await Url.find({ user: req.user._id }).sort('-createdAt');
   res.status(200).render('dashboard', {
     title: 'Dashboard',
     urls: urls,
     host: req.get('host'),
   });
-});
+};
 
 exports.getDonation = (req, res) => {
   res.status(200).render('donation', {

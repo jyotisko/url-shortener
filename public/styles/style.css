@@ -404,3 +404,35 @@ a {
     background-color: rgba(117, 117, 117, 0.04);
     padding: 2.5rem;
     border-radius: 5px; }
+
+.main--error {
+  height: 100vh;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-family: 'Poppins', sans-serif; }
+  .main--error .error__suly {
+    font-size: 4rem;
+    color: #E46D6D;
+    font-weight: 400;
+    display: inline-block; }
+    .main--error .error__suly::after {
+      content: '';
+      display: block;
+      height: 0.3rem;
+      width: 10%;
+      background-color: #E46D6D;
+      transition: all 0.3s ease; }
+    .main--error .error__suly:hover::after {
+      width: 100%; }
+  .main--error .error__text {
+    font-size: 3rem;
+    font-weight: 500;
+    color: #ff0000; }
+  .main--error .error__paragraph {
+    font-size: 2rem; }
+  .main--error .error__contact-text {
+    font-size: 1.5rem; }
+  .main--error .error a {
+    display: inline-block; }

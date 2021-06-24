@@ -1,11 +1,18 @@
 const AppError = require('../utils/appError');
 
-const sendErrorDev = (err, res) => {
-  return res.status(err.statusCode || 500).json({
-    status: err.status,
-    error: err,
-    message: err.message,
-    stack: err.stack
+const sendErrorDev = (err, req, res) => {
+  if (req.originalUrl.startsWith('/api/v1')) {
+    return res.status(err.statusCode || 500).json({
+      status: err.status,
+      error: err,
+      message: err.message,
+      stack: err.stack
+    });
+  }
+
+  return res.status(err.statusCode || 500).render('error', {
+    title: 'Error',
+    message: err.message
   });
 };
 
@@ -16,30 +23,47 @@ const handleValidationErrorDB = err => {
   return new AppError(message, 400);
 };
 
-const sendErrorProd = (err, res) => {
+const sendErrorProd = (err, req, res) => {
   if (err.isOperational) {
-    return res.status(err.statusCode || 500).json({
-      status: err.status,
+
+    if (req.originalUrl.startsWith('/api/v1')) {
+      return res.status(err.statusCode || 500).json({
+        status: err.status,
+        message: err.message
+      });
+    }
+
+    return res.status(err.statusCode || 500).render('error', {
+      title: 'Error',
       message: err.message
     });
+
   } else {
     console.log(`💥 UNPREDICTED PRODUCTION ERROR`, err);
-    return res.status(500).json({
-      status: 'error',
-      message: 'Something went wrong.',
-      err: err
+
+    if (req.originalUrl.startsWith('/api/v1')) {
+      return res.status(500).json({
+        status: 'error',
+        message: 'Something went wrong.',
+        err: err
+      });
+    }
+
+    return res.status(err.statusCode || 500).render('error', {
+      title: 'Error',
+      message: err.message
     });
   }
 };
 
 module.exports = (err, req, res, next) => {
-  if (process.env.NODE_ENV === 'development') sendErrorDev(err, res);
+  if (process.env.NODE_ENV === 'development') sendErrorDev(err, req, res);
   if (process.env.NODE_ENV === 'production') {
     let error = { ...err };
     error.message = err.message;
     error.name = err.name;
 
     if (error.name === 'ValidationError') error = handleValidationErrorDB(error);
-    sendErrorProd(error, res);
+    sendErrorProd(error, req, res);
   }
 };
