@@ -22,10 +22,8 @@ module.exports = class Email {
       });
     } else {
       return nodemailer.createTransport({
-        host: 'smtp.gmail.com',
+        service: process.env.EMAIL_SERVICE_PROD,
         port: process.env.EMAIL_PORT_PROD,
-        ignoreTLS: false,
-        secure: false,
         auth: {
           user: process.env.EMAIL_USERNAME_PROD,
           pass: process.env.EMAIL_PASSWORD_PROD,
