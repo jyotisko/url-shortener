@@ -38,6 +38,14 @@ const userSchema = new mongoose.Schema({
     default: 'user',
     enum: ['user', 'admin']
   },
+  verified: {
+    type: Boolean,
+    default: false
+  },
+  verificationToken: {
+    type: String,
+    select: false
+  },
   createdAt: {
     type: Date,
     default: Date.now
@@ -51,9 +59,20 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+userSchema.pre('save', async function (next) {
+  if (!this.verificationToken) return next();
+  if (!this.isModified('verificationToken')) return next();
+  this.verificationToken = await bcrypt.hash(this.verificationToken, 6);
+  next();
+});
+
 userSchema.methods.isPasswordCorrect = async function (candidatePassword, hashedPassword) {
   return await bcrypt.compare(candidatePassword, hashedPassword);
 };
+
+userSchema.methods.isVerificationTokenCorrect = async function (candidateToken, hashedToken) {
+  return await bcrypt.compare(candidateToken, hashedToken);
+}
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;

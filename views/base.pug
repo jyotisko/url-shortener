@@ -9,6 +9,9 @@ html
   
   body 
     include _nav
+
+    - if (verified === false) 
+      include _notVerifiedMessage
     
     block content 
       h1 Placeholder

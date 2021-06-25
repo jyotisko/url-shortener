@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.post('/signup', authController.signup);
 router.post('/login', authController.login);
+router.get('/verify/:userId/:token', authController.verifyEmail);                                               // GET request because browser will send a GET request to the page 
 router.get('/logout', authController.logout);
 
 // Logged in user actions

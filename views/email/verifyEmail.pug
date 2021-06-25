@@ -1,0 +1,16 @@
+extends baseEmail 
+
+block content
+  p Hi #{firstName},
+  p Please confirm your email address by clicking the link below. If you didn't signed up at our website, please ignore this email.
+  table.btn.btn-primary(role='presentation', border='0', cellpadding='0', cellspacing='0')
+    tbody
+      tr
+        td(align='left')
+          table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+            tbody
+              tr
+                td
+                  a.btn--main(href=`${url}`, target='_blank') Verify Email
+  p If you face any issues with Su.ly, please don't resitate to contact us! Our support team is always there to help!
+  p - The Su.ly Team 

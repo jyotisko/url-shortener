@@ -1,0 +1,10 @@
+.section--not-verified {
+  height: auto;
+  width: 100%;
+  background-color: rgba($color-primary-1, 0.2);
+  border: 2px solid $color-primary-3;
+
+  p {
+    font-size: 2rem;
+  }
+}

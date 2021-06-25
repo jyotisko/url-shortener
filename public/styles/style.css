@@ -366,6 +366,14 @@ a {
   .footer--rigth h3 {
     font-weight: 500; }
 
+.section--not-verified {
+  height: auto;
+  width: 100%;
+  background-color: rgba(228, 109, 109, 0.2);
+  border: 2px solid #ff0000; }
+  .section--not-verified p {
+    font-size: 2rem; }
+
 .section__features {
   width: 100%;
   height: auto;

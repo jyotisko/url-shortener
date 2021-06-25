@@ -52,4 +52,8 @@ module.exports = class Email {
   async sendWelcome() {
     await this.send('welcome', 'Welcome to the Su.ly website!');
   }
+
+  async sendEmailVerification() {
+    await this.send('verifyEmail', 'Email Verification.');
+  }
 };

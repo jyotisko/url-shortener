@@ -4,6 +4,8 @@ const authController = require('../controllers/authController');
 
 const router = express.Router();
 
+router.use(authController.isVerified);
+
 router.get('/', authController.isLoggedIn, viewController.getHomePage);
 router.get('/login', authController.isLoggedIn, viewController.getLoginPage);
 router.get('/signup', authController.isLoggedIn, viewController.getSignupPage);
