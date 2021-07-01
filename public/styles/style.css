@@ -63,7 +63,8 @@ a {
   transition: all 0.4s ease;
   cursor: pointer;
   background-color: #fff;
-  outline: none; }
+  outline: none;
+  display: inline-block; }
   .btn--fill {
     background-color: #E46D6D;
     border: 3px solid #E46D6D;
@@ -199,7 +200,8 @@ a {
 
 .table {
   width: 100%;
-  height: auto; }
+  height: auto;
+  overflow-x: auto; }
   .table__head-row {
     font-size: 2rem;
     text-align: left;
@@ -302,7 +304,7 @@ a {
         width: 100%; }
 
 .header {
-  height: 90vh;
+  height: 85vh;
   width: 100%;
   background-color: #fff;
   padding: 10rem;
@@ -398,6 +400,11 @@ a {
     justify-content: center;
     align-items: center;
     border-bottom: 3px solid #E46D6D; }
+
+.section--urls {
+  overflow-x: auto; }
+  .section--urls::-webkit-scrollbar {
+    overflow: hidden; }
 
 .main--account {
   padding: 4rem 10rem;

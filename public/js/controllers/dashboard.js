@@ -8,7 +8,7 @@ class Dashboard {
     this.createUrlForm = document.querySelector('#create-url-dashboard');
     this.tableBody = document.querySelector('.table__body');
     this.urls = [];
-    this.resultsPerPage = 100;
+    this.resultsPerPage = 20;
     this.currentPage = 1;
     this.numPages = 0;
     this.init();
@@ -46,7 +46,7 @@ class Dashboard {
     markup += `
       <div class='pagination'>  
         ${this.currentPage !== 1 ? `<button class='pagination__btn pagination__btn--left btn btn--fill'>&larr; ${this.currentPage - 1}</button>` : ''}
-        <span class='pagination__page'>Page ${this.currentPage} of ${this.numPages}</span>
+        <span class='pagination__page'>Page ${this.currentPage} of ${this.numPages === 0 ? 1 : this.numPages}</span>
         ${this.numPages <= this.currentPage ? '' : `<button class='pagination__btn pagination__btn--right btn btn--fill'>${this.currentPage + 1} &rarr;</button>`}
       </div>
     `;
@@ -73,21 +73,27 @@ class Dashboard {
   }
 
   addHandlerCreate() {
-    this.createUrlForm.addEventListener('click', async e => {
+    const createBtn = document.querySelector('.btn--shorten-dashboard');
+    this.createUrlForm.addEventListener('submit', async e => {
       try {
         e.preventDefault();
+        if ([...createBtn.classList].includes('btn--disabled')) return;
+
         const originalUrl = this.createUrlForm['url'].value;
         if (!originalUrl) return;
         if (!validator.isURL(originalUrl)) return showAlert('error', 'Please enter a valid URL!');
         if (originalUrl.includes(window.location.hostname)) return showAlert('error', 'Already a valid Su.ly URL!');
 
+        createBtn.classList.add('btn--disabled');
         const { data } = await createUrlForLoggedInUser(originalUrl, this.createUrlForm.dataset.user);
         this.urls.unshift(data.url);
         this.renderResultByPage();
         this.createUrlForm['url'].value = '';
+        createBtn.classList.remove('btn--disabled');
       } catch (err) {
         let msg = '';
         if (err.message.includes('429')) msg = 'Too many requests from the same IP. Please try again in an hour.';
+        createBtn.classList.remove('btn--disabled');
         showAlert('error', `Something went wrong. ${msg || err.response.data.message}`);
       }
     });

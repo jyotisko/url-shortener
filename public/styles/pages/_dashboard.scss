@@ -15,3 +15,11 @@
     @include borderBottom($color-primary-1);
   }
 }
+
+.section--urls {
+  overflow-x: auto;
+
+  &::-webkit-scrollbar {
+    overflow: hidden;
+  }
+}

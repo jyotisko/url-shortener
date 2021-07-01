@@ -10476,6 +10476,18 @@ var _manageUrls = require("../utils/manageUrls");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -10493,7 +10505,7 @@ var Dashboard = /*#__PURE__*/function () {
     this.createUrlForm = document.querySelector('#create-url-dashboard');
     this.tableBody = document.querySelector('.table__body');
     this.urls = [];
-    this.resultsPerPage = 100;
+    this.resultsPerPage = 20;
     this.currentPage = 1;
     this.numPages = 0;
     this.init();
@@ -10515,7 +10527,7 @@ var Dashboard = /*#__PURE__*/function () {
         var shortUrl = "".concat(window.location.host, "/c/").concat(url.shortCode, " ");
         return "\n        <tr data-id='".concat(url._id, "' class='table__row table__data-row'>\n          <td>").concat(serialIndexNumbers[i], "</td>\n          <td> \n            <a href='http://").concat(shortUrl, "' class='table__link table__link--short'>").concat(shortUrl, "</a>\n          </td>\n          <td> \n            <a href='http://").concat(url.originalUrl.replace(/(^\w+:|^)\/\//, ''), "' class='table__link'>").concat(url.originalUrl, "</a>\n          </td>\n          <td>").concat(url.clicks, "</td>\n          <td class='table__options'>\n            <i class='icon icon--delete far fa-trash-alt'></i>\n            <i class='icon icon--edit far fa-edit'></i>\n            <i class=\"icon icon--copy far fa-copy\"></i>\n          </td>\n        </tr>\n      ");
       }).join('');
-      markup += "\n      <div class='pagination'>  \n        ".concat(this.currentPage !== 1 ? "<button class='pagination__btn pagination__btn--left btn btn--fill'>&larr; ".concat(this.currentPage - 1, "</button>") : '', "\n        <span class='pagination__page'>Page ").concat(this.currentPage, " of ").concat(this.numPages, "</span>\n        ").concat(this.numPages <= this.currentPage ? '' : "<button class='pagination__btn pagination__btn--right btn btn--fill'>".concat(this.currentPage + 1, " &rarr;</button>"), "\n      </div>\n    ");
+      markup += "\n      <div class='pagination'>  \n        ".concat(this.currentPage !== 1 ? "<button class='pagination__btn pagination__btn--left btn btn--fill'>&larr; ".concat(this.currentPage - 1, "</button>") : '', "\n        <span class='pagination__page'>Page ").concat(this.currentPage, " of ").concat(this.numPages === 0 ? 1 : this.numPages, "</span>\n        ").concat(this.numPages <= this.currentPage ? '' : "<button class='pagination__btn pagination__btn--right btn btn--fill'>".concat(this.currentPage + 1, " &rarr;</button>"), "\n      </div>\n    ");
       this.tableBody.innerHTML = markup;
       this.addHandlerPaginate();
     }
@@ -10546,7 +10558,8 @@ var Dashboard = /*#__PURE__*/function () {
     value: function addHandlerCreate() {
       var _this2 = this;
 
-      this.createUrlForm.addEventListener('click', /*#__PURE__*/function () {
+      var createBtn = document.querySelector('.btn--shorten-dashboard');
+      this.createUrlForm.addEventListener('submit', /*#__PURE__*/function () {
         var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
           var originalUrl, _yield$createUrlForLo, data, msg;
 
@@ -10556,36 +10569,46 @@ var Dashboard = /*#__PURE__*/function () {
                 case 0:
                   _context.prev = 0;
                   e.preventDefault();
-                  originalUrl = _this2.createUrlForm['url'].value;
 
-                  if (originalUrl) {
-                    _context.next = 5;
+                  if (!_toConsumableArray(createBtn.classList).includes('btn--disabled')) {
+                    _context.next = 4;
                     break;
                   }
 
                   return _context.abrupt("return");
 
-                case 5:
-                  if (_validator.default.isURL(originalUrl)) {
+                case 4:
+                  originalUrl = _this2.createUrlForm['url'].value;
+
+                  if (originalUrl) {
                     _context.next = 7;
+                    break;
+                  }
+
+                  return _context.abrupt("return");
+
+                case 7:
+                  if (_validator.default.isURL(originalUrl)) {
+                    _context.next = 9;
                     break;
                   }
 
                   return _context.abrupt("return", (0, _showAlert.showAlert)('error', 'Please enter a valid URL!'));
 
-                case 7:
+                case 9:
                   if (!originalUrl.includes(window.location.hostname)) {
-                    _context.next = 9;
+                    _context.next = 11;
                     break;
                   }
 
                   return _context.abrupt("return", (0, _showAlert.showAlert)('error', 'Already a valid Su.ly URL!'));
 
-                case 9:
-                  _context.next = 11;
+                case 11:
+                  createBtn.classList.add('btn--disabled');
+                  _context.next = 14;
                   return (0, _manageUrls.createUrlForLoggedInUser)(originalUrl, _this2.createUrlForm.dataset.user);
 
-                case 11:
+                case 14:
                   _yield$createUrlForLo = _context.sent;
                   data = _yield$createUrlForLo.data;
 
@@ -10594,22 +10617,24 @@ var Dashboard = /*#__PURE__*/function () {
                   _this2.renderResultByPage();
 
                   _this2.createUrlForm['url'].value = '';
-                  _context.next = 23;
+                  createBtn.classList.remove('btn--disabled');
+                  _context.next = 28;
                   break;
 
-                case 18:
-                  _context.prev = 18;
+                case 22:
+                  _context.prev = 22;
                   _context.t0 = _context["catch"](0);
                   msg = '';
                   if (_context.t0.message.includes('429')) msg = 'Too many requests from the same IP. Please try again in an hour.';
+                  createBtn.classList.remove('btn--disabled');
                   (0, _showAlert.showAlert)('error', "Something went wrong. ".concat(msg || _context.t0.response.data.message));
 
-                case 23:
+                case 28:
                 case "end":
                   return _context.stop();
               }
             }
-          }, _callee, null, [[0, 18]]);
+          }, _callee, null, [[0, 22]]);
         }));
 
         return function (_x) {
@@ -11214,7 +11239,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64631" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65215" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

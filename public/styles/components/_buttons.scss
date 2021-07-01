@@ -6,6 +6,7 @@
   cursor: pointer;
   background-color: $color-white-3;
   outline: none;
+  display: inline-block;
 
   &--fill {
     background-color: $color-primary-1;
