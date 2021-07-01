@@ -3,11 +3,18 @@
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 2rem;
 
+  @include respond(tab-port) {
+    grid-template-columns: repeat(1, 1fr);
+    justify-content: center;
+    align-items: center;
+  }
+
   .feature__box {
     background-color: $color-white-3;
     padding: 3rem 1.8rem;
     border-radius: 0.2rem;
     position: relative;
+
 
     &::after {
       position: absolute;

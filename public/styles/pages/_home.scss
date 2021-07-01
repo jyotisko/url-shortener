@@ -10,3 +10,9 @@
   height: auto;
   padding: 4rem 10rem;
 }
+
+header{
+  @include respond(tab-port) {
+    padding: 3rem 6rem !important;
+  }
+}

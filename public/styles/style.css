@@ -1,3 +1,17 @@
+/*
+0 - 600px            Phone
+600px - 900px        Tablet Portrait
+900px - 1200px       Tablet Landspace
+[1200px - 1800px]    Normal styles apply
+1800px - +           Big Desktops
+*/
+/* 
+$breakpoint options:
+- phone
+- tab-port
+- tab-land
+- big-desktop
+*/
 @keyframes moveUpDown {
   from {
     transform: translateY(10%); }
@@ -15,6 +29,15 @@
 html {
   font-size: 62.5%;
   font-family: 'Montserrat Alternates', sans-serif; }
+  @media (max-width: 80em) {
+    html {
+      font-size: 56.25%; } }
+  @media (max-width: 56.25em) {
+    html {
+      font-size: 50%; } }
+  @media (min-width: 112.5em) {
+    html {
+      font-size: 75%; } }
 
 a {
   text-decoration: none; }
@@ -22,6 +45,10 @@ a {
 .paragraph-primary {
   font-size: 3.6rem;
   width: 35ch; }
+  @media (max-width: 56.25em) {
+    .paragraph-primary {
+      font-size: 3rem;
+      hyphens: auto; } }
 
 .paragraph--secondary {
   font-size: 2rem; }
@@ -150,12 +177,17 @@ a {
   #create-url-dashboard input {
     width: 80%;
     background-color: rgba(117, 117, 117, 0.09); }
-  .create-url .create-url__btn,
-  #create-url-dashboard .create-url__btn {
-    width: 20%; }
+    @media (max-width: 56.25em) {
+      .create-url input,
+      #create-url-dashboard input {
+        width: 70%; } }
   .create-url button,
   #create-url-dashboard button {
     width: 20%; }
+    @media (max-width: 56.25em) {
+      .create-url button,
+      #create-url-dashboard button {
+        width: 30%; } }
   .create-url .hidden,
   #create-url-dashboard .hidden {
     display: none; }
@@ -176,6 +208,11 @@ a {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 2rem; }
+  @media (max-width: 56.25em) {
+    .features {
+      grid-template-columns: repeat(1, 1fr);
+      justify-content: center;
+      align-items: center; } }
   .features .feature__box {
     background-color: #fff;
     padding: 3rem 1.8rem;
@@ -257,15 +294,19 @@ a {
     text-decoration: underline 2px solid #E46D6D; }
 
 .nav {
-  height: 10vh;
+  height: auto;
   width: 100%;
   background-color: #FaFaFa;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 10rem; }
+  padding: 2rem 10rem; }
+  @media (max-width: 37.5em) {
+    .nav {
+      padding: 2rem 5rem; } }
   .nav__logo {
     font-size: 3rem;
+    width: 50%;
     color: #757575; }
     .nav__logo h1 {
       font-weight: 400;
@@ -309,15 +350,27 @@ a {
   background-color: #fff;
   padding: 10rem;
   position: relative;
-  overflow-x: hidden; }
+  overflow: hidden; }
   .header__left {
     position: absolute;
     top: 50%;
-    transform: translateY(-50%); }
+    transform: translateY(-50%);
+    z-index: 5; }
   .header__right {
     position: absolute;
     top: 30%;
-    right: -5%; }
+    right: -5%;
+    z-index: 1; }
+    @media (max-width: 80em) {
+      .header__right {
+        bottom: -120rem;
+        right: -60rem; }
+        .header__right img {
+          width: 40%;
+          height: 40%; } }
+    @media (max-width: 56.25em) {
+      .header__right {
+        display: none; } }
   .header__arrow {
     position: absolute;
     bottom: 5%;
@@ -348,9 +401,19 @@ a {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   background-color: rgba(117, 117, 117, 0.05); }
+  @media (max-width: 37.5em) {
+    .footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column; } }
   .footer--left {
     height: 100%;
-    width: 100%; }
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; }
     .footer--left h1 {
       font-size: 5rem;
       font-weight: 400;
@@ -365,8 +428,13 @@ a {
         transition: all 0.3s ease; }
       .footer--left h1:hover::after {
         width: 100%; }
-  .footer--rigth h3 {
-    font-weight: 500; }
+  .footer--right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; }
+    .footer--right h3 {
+      font-weight: 500; }
 
 .section--not-verified {
   height: auto;
@@ -387,7 +455,11 @@ a {
   height: auto;
   padding: 4rem 10rem; }
 
-.main {
+@media (max-width: 56.25em) {
+  header {
+    padding: 3rem 6rem !important; } }
+
+.main--dashboard {
   min-height: 80vh;
   max-height: auto; }
 
@@ -409,7 +481,8 @@ a {
 .main--account {
   padding: 4rem 10rem;
   display: grid;
-  place-items: center; }
+  place-items: center;
+  height: 90vh; }
   .main--account .forms__container {
     height: auto;
     width: 85%;
@@ -419,6 +492,11 @@ a {
     background-color: rgba(117, 117, 117, 0.04);
     padding: 2.5rem;
     border-radius: 5px; }
+    @media (max-width: 56.25em) {
+      .main--account .forms__container {
+        display: grid;
+        width: 100%;
+        grid-template-columns: repeat(1, 1fr); } }
 
 .main--error {
   height: 100vh;

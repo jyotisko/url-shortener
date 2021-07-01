@@ -7,7 +7,6 @@ export const updateUserData = form => {
     try {
       e.preventDefault();
       const btn = document.querySelector('.btn--data');
-      const navNameEl = document.querySelector('.nav__user-name');
 
       const name = form['name'].value;
       const email = form['email'].value;
@@ -17,17 +16,16 @@ export const updateUserData = form => {
       btn.textContent = 'Updating...'
       btn.classList.add('btn--disabled');
 
-      const { data } = await updateData('data', {
+      await updateData('data', {
         name: name,
         email: email,
       });
 
-      navNameEl.textContent = data.user.name;
       btn.textContent = 'Update data'
       btn.classList.remove('btn--disabled');
 
     } catch (err) {
-      showAlert('error', `Something went wrong. ${err.response.data.message}`);
+      showAlert('error', `Something went wrong. ${err?.response?.data?.message || err.message}`);
       btn.textContent = 'Update data'
       btn.classList.remove('btn--disabled');
     }

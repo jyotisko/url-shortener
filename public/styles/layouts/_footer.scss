@@ -6,9 +6,20 @@
   grid-template-columns: repeat(2, 1fr);
   background-color: rgba($color-gray-1, 0.05);
 
+  @include respond(phone) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
   &--left {
     height: 100%;
-    width: 100%;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
       h1 {
       font-size: 5rem;
       font-weight: 400;
@@ -18,7 +29,11 @@
     }
   }
 
-  &--rigth {
+  &--right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     h3 {
       font-weight: 500;
     }

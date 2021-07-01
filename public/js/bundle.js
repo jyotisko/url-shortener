@@ -10978,7 +10978,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var updateUserData = function updateUserData(form) {
   form.addEventListener('submit', /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
-      var _btn, navNameEl, name, email, _yield$updateData, data;
+      var _btn, name, email, _err$response, _err$response$data;
 
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
@@ -10987,52 +10987,48 @@ var updateUserData = function updateUserData(form) {
               _context.prev = 0;
               e.preventDefault();
               _btn = document.querySelector('.btn--data');
-              navNameEl = document.querySelector('.nav__user-name');
               name = form['name'].value;
               email = form['email'].value;
 
               if (_validator.default.isEmail(email)) {
-                _context.next = 8;
+                _context.next = 7;
                 break;
               }
 
               return _context.abrupt("return", (0, _showAlert.showAlert)('error', 'Please enter a valid email address'));
 
-            case 8:
+            case 7:
               _btn.textContent = 'Updating...';
 
               _btn.classList.add('btn--disabled');
 
-              _context.next = 12;
+              _context.next = 11;
               return (0, _updateData.default)('data', {
                 name: name,
                 email: email
               });
 
-            case 12:
-              _yield$updateData = _context.sent;
-              data = _yield$updateData.data;
-              navNameEl.textContent = data.user.name;
+            case 11:
               _btn.textContent = 'Update data';
 
               _btn.classList.remove('btn--disabled');
 
-              _context.next = 24;
+              _context.next = 20;
               break;
 
-            case 19:
-              _context.prev = 19;
+            case 15:
+              _context.prev = 15;
               _context.t0 = _context["catch"](0);
-              (0, _showAlert.showAlert)('error', "Something went wrong. ".concat(_context.t0.response.data.message));
+              (0, _showAlert.showAlert)('error', "Something went wrong. ".concat((_context.t0 === null || _context.t0 === void 0 ? void 0 : (_err$response = _context.t0.response) === null || _err$response === void 0 ? void 0 : (_err$response$data = _err$response.data) === null || _err$response$data === void 0 ? void 0 : _err$response$data.message) || _context.t0.message));
               btn.textContent = 'Update data';
               btn.classList.remove('btn--disabled');
 
-            case 24:
+            case 20:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, null, [[0, 19]]);
+      }, _callee, null, [[0, 15]]);
     }));
 
     return function (_x) {

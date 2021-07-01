@@ -62,14 +62,18 @@
   input {
     width: 80%;
     background-color: rgba($color-gray-1, 0.09);
-  }
 
-  .create-url__btn {
-    width: 20%;
+    @include respond(tab-port) {
+      width: 70%;
+    }
   }
 
   button {
     width: 20%;
+
+    @include respond(tab-port) {
+      width: 30%;
+    }
   }
 
   .hidden {

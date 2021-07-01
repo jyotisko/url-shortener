@@ -1,6 +1,12 @@
 .paragraph-primary {
   font-size: 3.6rem;
   width: 35ch;
+
+  @include respond(tab-port) {
+    font-size: 3rem;
+    hyphens: auto;
+  }
+
 }
 
 .paragraph--secondary {

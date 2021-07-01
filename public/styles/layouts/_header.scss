@@ -4,18 +4,33 @@
   background-color: $color-white-3;
   padding: 10rem;
   position: relative;
-  overflow-x: hidden;
+  overflow: hidden;
 
   &__left {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
+    z-index: 5;
   }
 
   &__right {
     position: absolute;
     top: 30%;
     right: -5%;
+    z-index: 1;
+
+    @include respond(tab-land) {
+      bottom: -120rem;
+      right: -60rem;
+      img {
+        width: 40%;
+        height: 40%;
+      }
+    }
+
+    @include respond(tab-port) {
+      display: none;
+    }
   }
 
   &__arrow {

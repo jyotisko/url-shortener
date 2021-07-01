@@ -2,6 +2,7 @@
   padding: 4rem 10rem;
   display: grid;
   place-items: center;
+  height: 90vh;
   
   .forms__container  {
     height: auto;
@@ -12,5 +13,11 @@
     background-color: rgba($color-gray-1, 0.04);
     padding: 2.5rem;
     border-radius: 5px;
+
+    @include respond(tab-port) {
+      display: grid;
+      width: 100%;
+      grid-template-columns: repeat(1, 1fr);
+    }
   }
 }
