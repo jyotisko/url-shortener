@@ -135,15 +135,40 @@ a {
     transform: translateY(2%); }
 
 .form__group {
-  width: 100%; }
+  width: 100%;
+  position: relative; }
   .form__group:not(:last-child) {
     margin-bottom: 3rem; }
+  .form__group-photo {
+    display: flex; }
+    .form__group-photo .form__label {
+      position: absolute;
+      bottom: 0;
+      left: 10rem;
+      font-size: 1.4rem !important;
+      outline-offset: 2px;
+      outline: 2px solid #E46D6D;
+      cursor: pointer;
+      padding: 0.2rem 0.6rem;
+      transition: 0.3s ease; }
+      .form__group-photo .form__label:hover {
+        background-color: #E46D6D;
+        color: #FaFaFa; }
 
 .form__label, .form__input {
   font-size: 2rem;
   display: block;
   color: #E46D6D;
   font-weight: 400; }
+
+.form__input-photo {
+  display: none; }
+
+.form__photo {
+  width: 7.5rem;
+  height: 7.5rem;
+  outline-offset: 2px;
+  outline: 2px solid #E46D6D; }
 
 .form__input {
   width: 100%;

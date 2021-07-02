@@ -1,8 +1,30 @@
 .form {
   &__group {
     width: 100%;
+    position: relative;
     &:not(:last-child) {
       margin-bottom: 3rem;
+    }
+
+    &-photo {
+      display: flex;
+
+      .form__label {
+        position: absolute;
+        bottom: 0;
+        left: 10rem;
+        font-size: 1.4rem !important;
+        outline-offset: 2px;
+        outline: 2px solid $color-primary-1;
+        cursor: pointer;
+        padding: 0.2rem 0.6rem;
+        transition: 0.3s ease;
+
+        &:hover {
+          background-color: $color-primary-1;
+          color: $color-white-1;
+        }
+      }
     }
   }
 
@@ -12,6 +34,17 @@
     display: block;
     color: $color-primary-1;
     font-weight: 400;
+  }
+
+  &__input-photo {
+    display: none;
+  }
+
+  &__photo {
+    width: 7.5rem;
+    height: 7.5rem;
+    outline-offset: 2px;
+    outline: 2px solid $color-primary-1;
   }
 
   &__input {

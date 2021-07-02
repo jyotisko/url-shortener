@@ -11,7 +11,7 @@ router.get('/logout', authController.logout);
 
 // Logged in user actions
 router.use(authController.protect);
-router.patch('/updateMe', userController.updateMe);
+router.patch('/updateMe', userController.uploadUserPhoto, userController.updateMe);
 router.patch('/updateMyPassword', authController.updatePassword);
 
 // ADMIN actions

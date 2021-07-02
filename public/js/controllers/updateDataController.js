@@ -7,20 +7,22 @@ export const updateUserData = form => {
     try {
       e.preventDefault();
       const btn = document.querySelector('.btn--data');
+      const email = document.querySelector('#email');
+      const photo = document.querySelector('#photo');
 
-      const name = form['name'].value;
-      const email = form['email'].value;
+      if (!validator.isEmail(email.value)) return showAlert('error', 'Please enter a valid email address');
 
-      if (!validator.isEmail(email)) return showAlert('error', 'Please enter a valid email address');
+      const formData = new FormData();
+      formData.append('name', document.querySelector('#name').value);
+      formData.append('email', email.value);
+      if (photo.files.length > 0) formData.append('photo', photo.files[0]);
 
       btn.textContent = 'Updating...'
       btn.classList.add('btn--disabled');
 
-      await updateData('data', {
-        name: name,
-        email: email,
-      });
+      const { data } = await updateData('data', formData);
 
+      document.querySelector('.form__photo').src = `/img/users/${data.user.photo}`;
       btn.textContent = 'Update data'
       btn.classList.remove('btn--disabled');
 

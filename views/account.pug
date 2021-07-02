@@ -5,6 +5,10 @@ block content
     .forms__container 
       form.form.form--data
         h2.heading--secondary.u-mb-medium Update Data 
+        .form__group.form__group-photo 
+          img.form__photo(src=`/img/users/${user.photo}`)
+          label.form__label(for='photo') Upload A Photo
+          input#photo.form__input-photo(accept='images/*' type='file' name='photo')
         .form__group 
           label(for='name').form__label Name 
           input#name.form__input(placeholder='Your Name' name='name' value=`${user.name}` required)

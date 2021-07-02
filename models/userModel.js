@@ -33,6 +33,10 @@ const userSchema = new mongoose.Schema({
       message: 'The passwords does not match!'
     }
   },
+  photo: {
+    type: String,
+    default: 'default.jpg'
+  },
   role: {
     type: String,
     default: 'user',

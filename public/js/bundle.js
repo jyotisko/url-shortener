@@ -10978,7 +10978,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var updateUserData = function updateUserData(form) {
   form.addEventListener('submit', /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
-      var _btn, name, email, _err$response, _err$response$data;
+      var _btn, email, photo, formData, _yield$updateData, data, _err$response, _err$response$data;
 
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
@@ -10987,10 +10987,10 @@ var updateUserData = function updateUserData(form) {
               _context.prev = 0;
               e.preventDefault();
               _btn = document.querySelector('.btn--data');
-              name = form['name'].value;
-              email = form['email'].value;
+              email = document.querySelector('#email');
+              photo = document.querySelector('#photo');
 
-              if (_validator.default.isEmail(email)) {
+              if (_validator.default.isEmail(email.value)) {
                 _context.next = 7;
                 break;
               }
@@ -10998,37 +10998,41 @@ var updateUserData = function updateUserData(form) {
               return _context.abrupt("return", (0, _showAlert.showAlert)('error', 'Please enter a valid email address'));
 
             case 7:
+              formData = new FormData();
+              formData.append('name', document.querySelector('#name').value);
+              formData.append('email', email.value);
+              if (photo.files.length > 0) formData.append('photo', photo.files[0]);
               _btn.textContent = 'Updating...';
 
               _btn.classList.add('btn--disabled');
 
-              _context.next = 11;
-              return (0, _updateData.default)('data', {
-                name: name,
-                email: email
-              });
+              _context.next = 15;
+              return (0, _updateData.default)('data', formData);
 
-            case 11:
+            case 15:
+              _yield$updateData = _context.sent;
+              data = _yield$updateData.data;
+              document.querySelector('.form__photo').src = "/img/users/".concat(data.user.photo);
               _btn.textContent = 'Update data';
 
               _btn.classList.remove('btn--disabled');
 
-              _context.next = 20;
+              _context.next = 27;
               break;
 
-            case 15:
-              _context.prev = 15;
+            case 22:
+              _context.prev = 22;
               _context.t0 = _context["catch"](0);
               (0, _showAlert.showAlert)('error', "Something went wrong. ".concat((_context.t0 === null || _context.t0 === void 0 ? void 0 : (_err$response = _context.t0.response) === null || _err$response === void 0 ? void 0 : (_err$response$data = _err$response.data) === null || _err$response$data === void 0 ? void 0 : _err$response$data.message) || _context.t0.message));
               btn.textContent = 'Update data';
               btn.classList.remove('btn--disabled');
 
-            case 20:
+            case 27:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, null, [[0, 15]]);
+      }, _callee, null, [[0, 22]]);
     }));
 
     return function (_x) {
@@ -11235,7 +11239,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65215" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63990" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
