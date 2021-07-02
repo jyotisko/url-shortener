@@ -3,23 +3,32 @@
   max-height: auto;
 }
 
-.section {
+.section--create,
+.section--urls {
   padding: 4rem 10rem;
 
-  &--create {
-    width: 100%;
-    height: 10vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    @include borderBottom($color-primary-1);
+  @include respond(tab-port) {
+    padding: 5rem 3rem;
   }
+}
+
+.section--create {
+  width: 100%;
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @include borderBottom($color-primary-1);
 }
 
 .section--urls {
   overflow-x: auto;
-
+ 
   &::-webkit-scrollbar {
     overflow: hidden;
+  }
+
+  @include respond(tab-land) {
+    margin-right: 2rem;
   }
 }

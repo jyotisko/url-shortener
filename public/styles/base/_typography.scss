@@ -7,10 +7,19 @@
     hyphens: auto;
   }
 
+  @include respond(phone) {
+    font-size: 2.8rem;
+    width: 90%;
+  }
+
 }
 
 .paragraph--secondary {
   font-size: 2rem;
+
+  @include respond(tab-port) {
+    font-size: 1.6rem;
+  }
 }
 
 .heading--primary {
@@ -25,4 +34,8 @@
 .heading--secondary {
   font-size: 2.3rem;
   color: rgba($color-primary-1, 0.9);
+
+  @include respond(tab-port) {
+    font-size: 2rem;
+  }
 }

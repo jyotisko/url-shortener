@@ -39,6 +39,9 @@ html {
     html {
       font-size: 75%; } }
 
+body {
+  position: relative; }
+
 a {
   text-decoration: none; }
 
@@ -49,9 +52,16 @@ a {
     .paragraph-primary {
       font-size: 3rem;
       hyphens: auto; } }
+  @media (max-width: 37.5em) {
+    .paragraph-primary {
+      font-size: 2.8rem;
+      width: 90%; } }
 
 .paragraph--secondary {
   font-size: 2rem; }
+  @media (max-width: 56.25em) {
+    .paragraph--secondary {
+      font-size: 1.6rem; } }
 
 .heading--primary {
   font-size: 4rem;
@@ -64,6 +74,9 @@ a {
 .heading--secondary {
   font-size: 2.3rem;
   color: rgba(228, 109, 109, 0.9); }
+  @media (max-width: 56.25em) {
+    .heading--secondary {
+      font-size: 2rem; } }
 
 .u-mb-micro {
   margin-bottom: 0.8rem !important; }
@@ -238,14 +251,19 @@ a {
 .table {
   width: 100%;
   height: auto;
-  overflow-x: auto; }
+  overflow-x: auto;
+  border-collapse: collapse; }
+  @media (max-width: 56.25em) {
+    .table {
+      margin-right: 3rem; } }
   .table__head-row {
     font-size: 2rem;
     text-align: left;
     background-color: rgba(117, 117, 117, 0.2); }
   .table__row td,
   .table__row th {
-    padding: 1rem 2rem; }
+    padding: 1rem 2rem;
+    border: 1px solid rgba(117, 117, 117, 0.2); }
   .table__data-row {
     position: relative;
     font-size: 1.8rem; }
@@ -309,6 +327,7 @@ a {
     width: 50%;
     color: #757575; }
     .nav__logo h1 {
+      display: inline-block;
       font-weight: 400;
       cursor: pointer; }
       .nav__logo h1::after {
@@ -397,7 +416,7 @@ a {
 .footer {
   height: auto;
   width: 100%;
-  padding: 4rem 10rem;
+  padding: 3rem 10rem;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   background-color: rgba(117, 117, 117, 0.05); }
@@ -463,20 +482,29 @@ a {
   min-height: 80vh;
   max-height: auto; }
 
-.section {
+.section--create,
+.section--urls {
   padding: 4rem 10rem; }
-  .section--create {
-    width: 100%;
-    height: 10vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-bottom: 3px solid #E46D6D; }
+  @media (max-width: 56.25em) {
+    .section--create,
+    .section--urls {
+      padding: 5rem 3rem; } }
+
+.section--create {
+  width: 100%;
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 3px solid #E46D6D; }
 
 .section--urls {
   overflow-x: auto; }
   .section--urls::-webkit-scrollbar {
     overflow: hidden; }
+  @media (max-width: 80em) {
+    .section--urls {
+      margin-right: 2rem; } }
 
 .main--account {
   padding: 4rem 10rem;
