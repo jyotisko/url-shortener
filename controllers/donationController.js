@@ -30,7 +30,6 @@ exports.getCheckoutSession = catchAsync(async (req, res, _next) => {
 });
 
 const createDonationCheckout = async session => {
-  console.log(session);
   await Donation.create({
     user: session.client_reference_id,
     amount: session.amount_total / 100
