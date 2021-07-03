@@ -11152,7 +11152,146 @@ var logoutController = function logoutController(logoutBtn) {
 
 var _default = logoutController;
 exports.default = _default;
-},{"../utils/auth":"utils/auth.js","../utils/showAlert":"utils/showAlert.js"}],"index.js":[function(require,module,exports) {
+},{"../utils/auth":"utils/auth.js","../utils/showAlert":"utils/showAlert.js"}],"utils/stripe.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.donate = void 0;
+
+var _axios = _interopRequireDefault(require("axios"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var stripe = Stripe('pk_test_51J3gXCSEvfkMrwjt98LFA4JzKhjWgfXtcHip50PQjiQDZWLyZIv7dqwXK1evEKvJ9tsmBDZ7eFSlTUEwthBz7CiU00cLOWyvDN');
+
+var donate = /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(amount) {
+    var session;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.prev = 0;
+            _context.next = 3;
+            return (0, _axios.default)({
+              method: 'GET',
+              url: "/api/v1/donations/checkout-session/".concat(amount)
+            });
+
+          case 3:
+            session = _context.sent;
+            _context.next = 6;
+            return stripe.redirectToCheckout({
+              sessionId: session.data.session.id
+            });
+
+          case 6:
+            _context.next = 11;
+            break;
+
+          case 8:
+            _context.prev = 8;
+            _context.t0 = _context["catch"](0);
+            throw _context.t0;
+
+          case 11:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, null, [[0, 8]]);
+  }));
+
+  return function donate(_x) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
+exports.donate = donate;
+},{"axios":"../../node_modules/axios/index.js"}],"controllers/donationController.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.donationController = void 0;
+
+var _showAlert = require("../utils/showAlert");
+
+var _stripe = require("../utils/stripe.js");
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var donationController = function donationController(donationSection) {
+  donationSection.addEventListener('click', function (e) {
+    var _e$target$closest, _e$target$closest$cla;
+
+    if (!((_e$target$closest = e.target.closest('.card')) !== null && _e$target$closest !== void 0 && (_e$target$closest$cla = _e$target$closest.classList) !== null && _e$target$closest$cla !== void 0 && _e$target$closest$cla.contains('card'))) return;
+    var amount = +e.target.closest('.card').querySelector('.card__price').textContent.slice(1);
+    document.querySelector('.amount-selected').textContent = amount;
+  });
+  var donateBtn = donationSection.querySelector('.btn--donate');
+  donateBtn.addEventListener('click', /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
+      var amount, _err$response, _err$response$data;
+
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.prev = 0;
+              amount = +donationSection.querySelector('.amount-selected').textContent;
+
+              if (!(!amount || amount <= 0)) {
+                _context.next = 4;
+                break;
+              }
+
+              return _context.abrupt("return", (0, _showAlert.showAlert)('error', 'Please select an amount to donate!', 2));
+
+            case 4:
+              donateBtn.textContent = 'Processing...';
+              donateBtn.classList.add('btn--disabled');
+              _context.next = 8;
+              return (0, _stripe.donate)(amount);
+
+            case 8:
+              donateBtn.textContent = 'Donate';
+              donateBtn.classList.remove('btn--disabled');
+              _context.next = 17;
+              break;
+
+            case 12:
+              _context.prev = 12;
+              _context.t0 = _context["catch"](0);
+              (0, _showAlert.showAlert)('error', "Something went wrong! ".concat((_context.t0 === null || _context.t0 === void 0 ? void 0 : (_err$response = _context.t0.response) === null || _err$response === void 0 ? void 0 : (_err$response$data = _err$response.data) === null || _err$response$data === void 0 ? void 0 : _err$response$data.message) || _context.t0.message));
+              donateBtn.textContent = 'Donate';
+              donateBtn.classList.remove('btn--disabled');
+
+            case 17:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, null, [[0, 12]]);
+    }));
+
+    return function (_x) {
+      return _ref.apply(this, arguments);
+    };
+  }());
+};
+
+exports.donationController = donationController;
+},{"../utils/showAlert":"utils/showAlert.js","../utils/stripe.js":"utils/stripe.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 require("regenerator-runtime");
@@ -11169,6 +11308,8 @@ var _updateDataController = require("./controllers/updateDataController");
 
 var _logoutController = _interopRequireDefault(require("./controllers/logoutController"));
 
+var _donationController = require("./controllers/donationController");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // DOM Elements
@@ -11178,7 +11319,8 @@ var createAnonymousUrlForm = document.querySelector('#home-create-url');
 var dashboardEl = document.querySelector('.main--dashboard');
 var updateUserDataForm = document.querySelector('.form--data');
 var updatePasswordForm = document.querySelector('.form--password');
-var logoutBtn = document.querySelector('.nav__link--logout'); // Delegations 
+var logoutBtn = document.querySelector('.nav__link--logout');
+var donationSection = document.querySelector('.section--donate'); // Delegations 
 
 if (loginForm) {
   (0, _loginController.default)(loginForm);
@@ -11208,10 +11350,14 @@ if (updatePasswordForm) {
   (0, _updateDataController.updatePassword)(updatePasswordForm);
 }
 
+if (donationSection) {
+  (0, _donationController.donationController)(donationSection);
+}
+
 if (logoutBtn) {
   (0, _logoutController.default)(logoutBtn);
 }
-},{"regenerator-runtime":"../../node_modules/regenerator-runtime/runtime.js","./controllers/createAnonymousUrl":"controllers/createAnonymousUrl.js","./controllers/loginController":"controllers/loginController.js","./controllers/signupController":"controllers/signupController.js","./controllers/dashboard":"controllers/dashboard.js","./controllers/updateDataController":"controllers/updateDataController.js","./controllers/logoutController":"controllers/logoutController.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"regenerator-runtime":"../../node_modules/regenerator-runtime/runtime.js","./controllers/createAnonymousUrl":"controllers/createAnonymousUrl.js","./controllers/loginController":"controllers/loginController.js","./controllers/signupController":"controllers/signupController.js","./controllers/dashboard":"controllers/dashboard.js","./controllers/updateDataController":"controllers/updateDataController.js","./controllers/logoutController":"controllers/logoutController.js","./controllers/donationController":"controllers/donationController.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -11239,7 +11385,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63990" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59599" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

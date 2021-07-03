@@ -33,9 +33,16 @@
 
 .heading--secondary {
   font-size: 2.3rem;
+  font-weight: 500;
   color: rgba($color-primary-1, 0.9);
 
   @include respond(tab-port) {
     font-size: 2rem;
   }
+}
+
+.heading--tertiary {
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: $color-primary-1;
 }

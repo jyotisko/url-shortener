@@ -13,6 +13,7 @@ const compression = require('compression')
 const urlRouter = require('./routes/urlRoutes');
 const userRouter = require('./routes/userRoutes');
 const viewRouter = require('./routes/viewRoutes');
+const donationRouter = require('./routes/donationRoutes');
 const globalErrorHandler = require('./controllers/errorController');
 const AppError = require('./utils/appError');
 
@@ -45,6 +46,7 @@ if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 app.use('/', viewRouter);
 app.use('/api/v1/urls', urlRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/donations', donationRouter);
 
 // Error Handling
 app.use('*', (req, _, next) => next(new AppError(`Can't find ${req.baseUrl} on this server`, 404)));

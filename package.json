@@ -33,6 +33,7 @@
     "nodemailer": "^6.6.1",
     "pug": "^3.0.2",
     "regenerator-runtime": "^0.13.7",
+    "stripe": "^8.160.0",
     "sweetalert": "^2.1.2",
     "validator": "^13.6.0",
     "xss-clean": "^0.1.1"

@@ -1,5 +1,38 @@
-extends base 
+extends base   
+
+//- block append head 
+//-   script(src='https://js.stripe.com/v3/')
 
 block content 
   main.main.main--donation 
-    h1 Donations page is not yet implemented!
+    section.section.section--donate 
+      p.heading--primary Donate to su.ly 
+      p.paragraph--secondary.u-mb-medium Your little contribution can help suly to strive for years!
+      h2.heading--secondary.u-mb-small Select an amount
+      .card__container.u-mb-small 
+        .card 
+          h3.card__price $1
+        .card 
+          h3.card__price $3
+        .card 
+          h3.card__price $5
+        .card
+          h3.card__price $10
+        .card 
+          h3.card__price $15
+        .card 
+          h3.card__price $20
+        .card 
+          h3.card__price $30
+        .card 
+          h3.card__price $50
+        .card 
+          h3.card__price $80
+        .card 
+          h3.card__price $100
+      h4.amount.heading--tertiary.u-mb-small Selected amount to donate: $
+        span.amount-selected 0
+      
+      button.btn.btn--fill.btn--donate Donate
+        
+        

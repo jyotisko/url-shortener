@@ -1,0 +1,33 @@
+.card__container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-gap: 2rem;
+
+  @include respond(tab-port) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  @include respond(phone) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .card {
+    background-color: rgba($color-gray-1, 0.15);
+    padding: 0.8rem 0;
+    cursor: pointer;
+    outline: 2px solid $color-primary-1;
+    transition: 0.3s ease;
+    outline-style: dotted;
+    
+    &__price {
+      font-size: 3rem;
+      color: $color-black-1;
+    }
+
+    &:hover {
+      outline-offset: 6px;
+      outline-width: 4px;
+    }
+  }
+}
