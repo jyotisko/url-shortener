@@ -8,7 +8,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, _next) => {
 
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
-    success_url: `${req.protocol}://${req.get('host')}`,
+    success_url: `${req.protocol}://${req.get('host')}?donate=true`,
     cancel_url: `${req.protocol}://${req.get('host')}/donate`,
     customer_email: req.user.email,
     client_reference_id: `${req.user._id}`,
@@ -27,6 +27,27 @@ exports.getCheckoutSession = catchAsync(async (req, res, _next) => {
     status: 'success',
     session: session
   });
+});
+
+const createDonationCheckout = async session => {
+  console.log(session);
+  await Donation.create({
+    user: session.client_reference_id,
+    amount: session.amount_total / 100
+  });
+};
+
+exports.webhookCheckout = catchAsync(async (req, res, next) => {
+  let event;
+  try {
+    const signature = req.headers['stripe-signature'];
+    event = stripe.webhooks.constructEvent(req.body, signature, process.env.STRIPE_WEBHOOK_SECRET);
+  } catch (err) {
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  if (event?.type === 'checkout.session.completed') createDonationCheckout(event.data.object);
+  res.status(200).json({ received: true });
 });
 
 // ADMIN action

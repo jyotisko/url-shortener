@@ -8,13 +8,15 @@ const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
 const cookieParser = require('cookie-parser');
 const mongoSanitize = require('express-mongo-sanitize');
-const compression = require('compression')
+const compression = require('compression');
+const bodyParse = require('body-parser');
 
 const urlRouter = require('./routes/urlRoutes');
 const userRouter = require('./routes/userRoutes');
 const viewRouter = require('./routes/viewRoutes');
 const donationRouter = require('./routes/donationRoutes');
 const globalErrorHandler = require('./controllers/errorController');
+const donationController = require('./controllers/donationController');
 const AppError = require('./utils/appError');
 
 const app = express();
@@ -33,12 +35,15 @@ app.use(rateLimit({
   windowMs: 1000 * 60 * 60,  // 1 hr
   message: 'Too many requests from the same IP, please try again in an hour!'
 }));
+app.use(cookieParser());
 app.use(mongoSanitize());
 app.use(compression());
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.post('/webhook-checkout', bodyParse.raw({ type: 'application/json' }), donationController.webhookCheckout);
+
 app.use(express.json({ limit: '10kb' }));
-app.use(cookieParser());
 
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 
