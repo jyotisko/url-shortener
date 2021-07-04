@@ -7,7 +7,7 @@ module.exports = class Email {
     this.to = user.email;
     this.firstName = user.name.split(' ')[0]
     this.url = url;
-    this.from = `Ur.ly Team <${process.env.EMAIL_FROM}>`
+    this.from = `Su.ly Team <${process.env.EMAIL_FROM}>`
   }
 
   createTransport() {

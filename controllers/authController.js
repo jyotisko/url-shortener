@@ -174,7 +174,8 @@ exports.verifyEmail = catchAsync(async (req, res, next) => {
     verified: true,
   });
 
-  res.status(200).json({
+  if (process.env.NODE_ENV === 'production') return res.redirect('/');
+  else return res.status(200).json({
     status: 'success',
     message: 'Verification successful!'
   });

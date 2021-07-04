@@ -39,7 +39,7 @@ const createDonationCheckout = async (session, req) => {
 
   try {
     const user = await User.findById(session.client_reference_id).select('name email');
-    const donationEmail = new Email(user, `${req.protocol}://${req.get('host')}/donation`);
+    const donationEmail = new Email(user, `${req.protocol}://${req.get('host')}/donate`);
     await donationEmail.sendDonationEmail();
   } catch (err) {
     console.log(`💥💥💥 ERROR WHILE SENDING EMAIL: ${err.emssage}`, err);
