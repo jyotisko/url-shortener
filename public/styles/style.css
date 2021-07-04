@@ -550,7 +550,8 @@ a {
   background-color: rgba(228, 109, 109, 0.2);
   border: 2px solid #ff0000; }
   .section--not-verified p {
-    font-size: 2rem; }
+    font-size: 2rem;
+    padding: 2rem; }
 
 .section__features {
   width: 100%;
