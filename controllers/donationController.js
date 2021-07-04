@@ -37,9 +37,13 @@ const createDonationCheckout = async (session, req) => {
     amount: session.amount_total / 100
   });
 
-  const user = await User.findById(session.client_reference_id).select('name email');
-  const donationEmail = new Email(user, `${req.protocol}://${req.get('host')}/donation`);
-  await donationEmail.sendDonationEmail();
+  try {
+    const user = await User.findById(session.client_reference_id).select('name email');
+    const donationEmail = new Email(user, `${req.protocol}://${req.get('host')}/donation`);
+    await donationEmail.sendDonationEmail();
+  } catch (err) {
+    console.log(`💥💥💥 ERROR WHILE SENDING EMAIL: ${err.emssage}`, err);
+  }
 };
 
 exports.webhookCheckout = catchAsync(async (req, res, next) => {
