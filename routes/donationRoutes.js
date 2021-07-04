@@ -4,6 +4,8 @@ const donationController = require('../controllers/donationController');
 
 const router = express.Router();
 
+router.get('/donators', donationController.getDonators);
+
 router.use(authController.protect);
 router.get('/checkout-session/:amount', donationController.getCheckoutSession);
 

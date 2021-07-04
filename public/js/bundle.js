@@ -11220,11 +11220,15 @@ exports.donate = donate;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.donationController = void 0;
+exports.donatorController = exports.donationController = void 0;
+
+var _axios = _interopRequireDefault(require("axios"));
 
 var _showAlert = require("../utils/showAlert");
 
 var _stripe = require("../utils/stripe.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -11291,7 +11295,45 @@ var donationController = function donationController(donationSection) {
 };
 
 exports.donationController = donationController;
-},{"../utils/showAlert":"utils/showAlert.js","../utils/stripe.js":"utils/stripe.js"}],"index.js":[function(require,module,exports) {
+
+var donatorController = /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(donatorSection) {
+    var _yield$axios, data, donators, markup;
+
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.next = 2;
+            return (0, _axios.default)({
+              method: 'GET',
+              url: '/api/v1/donations/donators'
+            });
+
+          case 2:
+            _yield$axios = _context2.sent;
+            data = _yield$axios.data;
+            donators = data.data.donators;
+            markup = donators.map(function (donator) {
+              return "\n      <div class='donator'>\n        <img class='donator__img' src='/img/users/".concat(donator.user.photo, "' />\n        <h3 class='donator__name'>").concat(donator.user.name, "</h3> \n      </div>\n    ");
+            }).join('');
+            document.querySelector('.donator__container').innerHTML = markup;
+
+          case 7:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+
+  return function donatorController(_x2) {
+    return _ref2.apply(this, arguments);
+  };
+}();
+
+exports.donatorController = donatorController;
+},{"axios":"../../node_modules/axios/index.js","../utils/showAlert":"utils/showAlert.js","../utils/stripe.js":"utils/stripe.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 require("regenerator-runtime");
@@ -11320,7 +11362,8 @@ var dashboardEl = document.querySelector('.main--dashboard');
 var updateUserDataForm = document.querySelector('.form--data');
 var updatePasswordForm = document.querySelector('.form--password');
 var logoutBtn = document.querySelector('.nav__link--logout');
-var donationSection = document.querySelector('.section--donate'); // Delegations 
+var donationSection = document.querySelector('.section--donate');
+var donatorSection = document.querySelector('.section--donator'); // Delegations 
 
 if (loginForm) {
   (0, _loginController.default)(loginForm);
@@ -11354,6 +11397,10 @@ if (donationSection) {
   (0, _donationController.donationController)(donationSection);
 }
 
+if (donatorSection) {
+  (0, _donationController.donatorController)(_donationController.donatorController);
+}
+
 if (logoutBtn) {
   (0, _logoutController.default)(logoutBtn);
 }
@@ -11385,7 +11432,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59599" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52675" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

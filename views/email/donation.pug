@@ -1,0 +1,18 @@
+extends baseEmail 
+
+block content
+  p Hi #{firstName},
+  p We can't express how happy we are to get your support!
+  p Thank you for the donation. Every cent counts, and it will help us to make su.ly free for everyone, forever!
+  p All of our donators are given a public attribution. You can find your name there by clicking on the link below. Once again, thank you! 🙏
+  table.btn.btn-primary(role='presentation', border='0', cellpadding='0', cellspacing='0')
+    tbody
+      tr
+        td(align='left')
+          table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+            tbody
+              tr
+                td
+                  a.btn--main(href=`${url}`, target='_blank') Take me to the website!
+  p - The Su.ly Team 
+

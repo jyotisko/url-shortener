@@ -1,8 +1,5 @@
 extends base   
 
-//- block append head 
-//-   script(src='https://js.stripe.com/v3/')
-
 block content 
   main.main.main--donation 
     section.section.section--donate 
@@ -34,5 +31,13 @@ block content
         span.amount-selected 0
       
       button.btn.btn--fill.btn--donate Donate
-        
+    
+    section.section.section--donator
+      h2.heading--secondary.heading--donator.u-mb-medium A big thanks to all the donators!
+      .donator__container 
+        //- .donator 
+        //-   img.donator__img(src='/img/users/default.jpg')
+        //-   h3.donator__name Test User 
+        //-   //- h4.donator__amount $20
+
         

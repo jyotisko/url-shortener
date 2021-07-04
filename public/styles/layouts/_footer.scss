@@ -14,26 +14,42 @@
   }
 
   &--left {
+    position: relative;
     height: 100%;
     width: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    @include respond(phone) {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    } 
       h1 {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
       font-size: 5rem;
       font-weight: 400;
       color: $color-gray-1;
-      @include underlineAnimation();
       display: inline-block;
+      
+      @include underlineAnimation();
+      @include respond(phone) {
+        position: relative;
+        transform: translateY(0);
+      }
     }
   }
 
   &--right {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    @include respond(phone) {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+    }
+
     h3 {
       font-weight: 500;
     }

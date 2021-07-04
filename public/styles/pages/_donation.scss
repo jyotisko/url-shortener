@@ -1,13 +1,25 @@
 .main--donation {
-  min-height: 80vh;
-  max-height: auto;
+  height: auto;
 
   .section {
     padding: 4rem 10rem;
+
+    @include respond(tab-port) {
+      padding: 3rem 4rem;
+    }
   }
 }
 
 .section--donate {
   height: auto;
   text-align: center;
+}
+
+.section--donator {
+  min-height: 40vh;
+  max-height: auto;
+
+  h2.heading--donator {
+    text-align: center;
+  }
 }

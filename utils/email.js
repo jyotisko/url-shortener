@@ -57,4 +57,8 @@ module.exports = class Email {
   async sendEmailVerification() {
     await this.send('verifyEmail', 'Email Verification.');
   }
+
+  async sendDonationEmail() {
+    await this.send('donation', 'Thank you for your contribution 🙏');
+  }
 };

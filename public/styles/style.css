@@ -367,6 +367,26 @@ a {
       outline-offset: 6px;
       outline-width: 4px; }
 
+.donator__container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 3rem; }
+  .donator__container .donator {
+    display: flex;
+    align-items: flex-end; }
+    .donator__container .donator__img {
+      height: 4rem;
+      width: 4rem;
+      margin-right: 1rem; }
+    .donator__container .donator__name {
+      font-size: 2rem;
+      font-weight: 400;
+      margin-right: 1rem; }
+    .donator__container .donator__amount {
+      font-size: 1.8rem;
+      font-weight: 400; }
+
 .nav {
   height: auto;
   width: 100%;
@@ -483,13 +503,18 @@ a {
       align-items: center;
       flex-direction: column; } }
   .footer--left {
+    position: relative;
     height: 100%;
-    width: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column; }
+    width: 50%; }
+    @media (max-width: 37.5em) {
+      .footer--left {
+        display: flex;
+        justify-content: center;
+        align-items: center; } }
     .footer--left h1 {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
       font-size: 5rem;
       font-weight: 400;
       color: #757575;
@@ -503,13 +528,21 @@ a {
         transition: all 0.3s ease; }
       .footer--left h1:hover::after {
         width: 100%; }
-  .footer--right {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column; }
-    .footer--right h3 {
-      font-weight: 500; }
+      @media (max-width: 37.5em) {
+        .footer--left h1 {
+          position: relative;
+          transform: translateY(0); } }
+  @media (max-width: 37.5em) {
+    .footer--right {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center; } }
+  .footer--right h3 {
+    font-weight: 500; }
 
 .section--not-verified {
   height: auto;
@@ -615,11 +648,19 @@ a {
     display: inline-block; }
 
 .main--donation {
-  min-height: 80vh;
-  max-height: auto; }
+  height: auto; }
   .main--donation .section {
     padding: 4rem 10rem; }
+    @media (max-width: 56.25em) {
+      .main--donation .section {
+        padding: 3rem 4rem; } }
 
 .section--donate {
   height: auto;
   text-align: center; }
+
+.section--donator {
+  min-height: 40vh;
+  max-height: auto; }
+  .section--donator h2.heading--donator {
+    text-align: center; }

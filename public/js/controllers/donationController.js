@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { showAlert } from '../utils/showAlert';
 import { donate } from '../utils/stripe.js';
 
@@ -26,4 +27,24 @@ export const donationController = donationSection => {
       donateBtn.classList.remove('btn--disabled');
     }
   });
+};
+
+export const donatorController = async donatorSection => {
+  const { data } = await axios({
+    method: 'GET',
+    url: '/api/v1/donations/donators'
+  });
+
+  const { donators } = data.data;
+
+  const markup = donators.map(donator => {
+    return `
+      <div class='donator'>
+        <img class='donator__img' src='/img/users/${donator.user.photo}' />
+        <h3 class='donator__name'>${donator.user.name}</h3> 
+      </div>
+    `;
+  }).join('');
+
+  document.querySelector('.donator__container').innerHTML = markup;
 };
