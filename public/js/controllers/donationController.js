@@ -10,7 +10,7 @@ export const donationController = donationSection => {
   });
 
   const donateBtn = donationSection.querySelector('.btn--donate');
-  donateBtn.addEventListener('click', async e => {
+  donateBtn && donateBtn.addEventListener('click', async e => {
     try {
       const amount = +(donationSection.querySelector('.amount-selected').textContent);
       if (!amount || amount <= 0) return showAlert('error', 'Please select an amount to donate!', 2);

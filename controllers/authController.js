@@ -1,5 +1,6 @@
 const { promisify } = require('util');
 const { nanoid } = require('nanoid');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
@@ -132,7 +133,7 @@ exports.isLoggedIn = async (req, res, next) => {
     return next();
 
   } catch (err) {
-    return next()
+    return next();
   }
   next();
 };
@@ -178,5 +179,58 @@ exports.verifyEmail = catchAsync(async (req, res, next) => {
   else return res.status(200).json({
     status: 'success',
     message: 'Verification successful!'
+  });
+});
+
+exports.forgotPassword = catchAsync(async (req, res, next) => {
+  // 1) Get the user based on the POSTed email
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) return next(new AppError('Unable to find an user with that email', 400));
+
+  // 2) Generate a token, and save it the database (encrypted)
+  const token = nanoid(50);
+  const encryptedToken = await bcrypt.hash(token, 4);
+  user.passwordResetToken = encryptedToken;
+  user.passwordResetExpiresIn = Date.now() + 10 * 60 * 1000;
+  await user.save({ validateBeforeSave: false });
+
+  // 3) Send reset email to the user
+  try {
+    const url = process.env.NODE_ENV === 'production' ? `${req.protocol}://${req.get('host')}/resetPassword?u=${user._id}&t=${token}` : `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${user._id}/${token}`;
+    const passwordResetEmail = new Email(user, url);
+    await passwordResetEmail.sendPasswordReset();
+  } catch (err) {
+    user.passwordResetToken = undefined;
+    user.passwordResetExpiresIn = undefined;
+    await user.save({ validateBeforeSave: false });
+    return next(new AppError('Unable to send password reset email, please try again later', 500));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    message: 'Email sent!'
+  });
+});
+
+exports.resetPassword = catchAsync(async (req, res, next) => {
+  // 1) Get the user and check if token is valid
+  const user = await User.findOne({ _id: req.params.userId, passwordResetExpiresIn: { $gt: Date.now() } });
+  if (!user) return next(new AppError('Token has expired!'));
+  if (!await user.isVerificationTokenCorrect(req.params.token, user.passwordResetToken)) return next(new AppError('Invalid Token!', 400));
+
+  // 2) Update the password
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  user.passwordResetExpiresIn = undefined;
+  user.passwordResetToken = undefined;
+  await user.save();
+
+  // 3) All good
+  res.status(201).json({
+    status: 'success',
+    data: {
+      user: user
+    },
+    message: 'Password reset was successful!'
   });
 });

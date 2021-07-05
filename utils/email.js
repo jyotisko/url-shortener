@@ -61,4 +61,8 @@ module.exports = class Email {
   async sendDonationEmail() {
     await this.send('donation', 'Thank you for your contribution 🙏');
   }
+
+  async sendPasswordReset() {
+    await this.send('passwordReset', 'Your password reset token (valid for 10 minutes)');
+  }
 };

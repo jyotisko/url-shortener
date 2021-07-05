@@ -8,9 +8,10 @@ block content
 
         .form__group 
           label(for='email').form__label.u-mb-micro Email 
-          input#email.form__input(name='email' type='email' placeholder='you@example.com' required)
+          input#email.form__input(name='email' type='email' placeholder='you@example.com' required minlength=8)
         .form__group 
           label(for='password').form__label.u-mb-micro Password 
           input#password.form__input(name='password' type='password' placeholder='••••••••' required minlength=8)
         
-        button.btn.btn--fill.btn--submit-login Login
+        button.btn.btn--fill.btn--submit-login.u-mb-small Login
+        p.form__forgot-password Forgot password?

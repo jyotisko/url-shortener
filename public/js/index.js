@@ -6,6 +6,7 @@ import Dashboard from './controllers/dashboard';
 import { updateUserData, updatePassword } from './controllers/updateDataController';
 import logoutController from './controllers/logoutController';
 import { donationController, donatorController } from './controllers/donationController';
+import { passwordResetController } from './controllers/passwordResetController';
 
 // DOM Elements
 const loginForm = document.querySelector('.form--login');
@@ -17,6 +18,7 @@ const updatePasswordForm = document.querySelector('.form--password');
 const logoutBtn = document.querySelector('.nav__link--logout');
 const donationSection = document.querySelector('.section--donate');
 const donatorSection = document.querySelector('.section--donator');
+const passwordResetForm = document.querySelector('.form--password-reset');
 
 // Delegations 
 if (loginForm) {
@@ -53,6 +55,10 @@ if (donationSection) {
 
 if (donatorSection) {
   donatorController(donatorController);
+}
+
+if (passwordResetForm) {
+  passwordResetController(passwordResetForm);
 }
 
 if (logoutBtn) {

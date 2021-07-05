@@ -12,4 +12,8 @@
   width: 80rem;
   border-radius: 1rem;
   padding: 1rem 2rem;
+
+  @include respond(tab-port) {
+    width: 100%;
+  }
 }

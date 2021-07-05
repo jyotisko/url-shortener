@@ -29,8 +29,10 @@ block content
           h3.card__price $100
       h4.amount.heading--tertiary.u-mb-small Selected amount to donate: $
         span.amount-selected 0
-      
-      button.btn.btn--fill.btn--donate Donate
+      if user
+        button.btn.btn--fill.btn--donate Donate
+      else 
+        a.btn.btn--fill(href='/login') Login to donate
     
     section.section.section--donator
       h2.heading--secondary.heading--donator.u-mb-medium A big thanks to all the donators!

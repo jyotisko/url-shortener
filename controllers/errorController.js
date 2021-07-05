@@ -23,6 +23,10 @@ const handleValidationErrorDB = err => {
   return new AppError(message, 400);
 };
 
+const handleJWTError = () => {
+  return new AppError('Please login again to perform this action.', 400);
+};
+
 const sendErrorProd = (err, req, res) => {
   if (err.isOperational) {
 
@@ -64,6 +68,7 @@ module.exports = (err, req, res, next) => {
     error.name = err.name;
 
     if (error.name === 'ValidationError') error = handleValidationErrorDB(error);
+    if (error.name === 'JsonWebTokenError') error = handleJWTError();
     sendErrorProd(error, req, res);
   }
 };

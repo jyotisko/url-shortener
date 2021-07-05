@@ -50,6 +50,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     select: false
   },
+  passwordResetToken: {
+    type: String
+  },
+  passwordResetExpiresIn: {
+    type: Date
+  },
   createdAt: {
     type: Date,
     default: Date.now
@@ -76,6 +82,10 @@ userSchema.methods.isPasswordCorrect = async function (candidatePassword, hashed
 
 userSchema.methods.isVerificationTokenCorrect = async function (candidateToken, hashedToken) {
   return await bcrypt.compare(candidateToken, hashedToken);
+};
+
+userSchema.methods.isPasswordResetTokenCorrect = async function (candidateResetToken, hashedResetToken) {
+  return await bcrypt.compare(candidateResetToken, hashedResetToken);
 }
 
 const User = mongoose.model('User', userSchema);

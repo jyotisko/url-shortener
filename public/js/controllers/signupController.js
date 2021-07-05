@@ -10,6 +10,8 @@ export default signupForm => {
       if (signupForm['password'].value !== signupForm['passwordConfirm'].value) return showAlert('error', 'The passwords do not match!');
 
       signupSumbitBtn.classList.add('btn--disabled');
+      signupSumbitBtn.textContent = 'Please wait...';
+
       await authenticate('signup', {
         name: signupForm['name'].value,
         email: signupForm['email'].value,
@@ -18,10 +20,12 @@ export default signupForm => {
       });
 
       signupSumbitBtn.classList.remove('btn--disabled');
+      signupSumbitBtn.textContent = 'Signup';
 
     } catch (err) {
-      signupSumbitBtn.classList.remove('btn--disabled');
       showAlert('error', `Something went wrong! ${err.response.data.message || ''}`);
+      signupSumbitBtn.classList.remove('btn--disabled');
+      signupSumbitBtn.textContent = 'Signup';
     }
   });
 };

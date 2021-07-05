@@ -77,6 +77,12 @@
       @include underlineAnimation;
     }
   }
+
+  &__forgot-password {
+    cursor: pointer;
+    color: $color-primary-1;
+    font-size: 1.4rem;
+  }
 }
 
 .create-url,

@@ -29,6 +29,14 @@
   background-image: linear-gradient(to right bottom, rgba($color-primary-3, 0.8), rgba($color-primary-1, 0.9));
   -webkit-background-clip: text;
           background-clip: text;
+
+  @include respond(tab-port) {
+    font-size: 3.4rem;
+  }
+
+  @include respond(phone) {
+    font-size: 3.2rem;
+  }
 }
 
 .heading--secondary {
